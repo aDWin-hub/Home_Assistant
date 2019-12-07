@@ -1,0 +1,112 @@
+  zal:
+    name: Зал
+    control: hidden
+    entities:
+       - sensor.humidity_158d00010d6b34
+       - sensor.temperature_158d00010d6b34
+       - sensor.xiaomi_power_strip
+       - binary_sensor.door_window_sensor_158d0002f92121
+       
+  bedroom:
+    name: Спальня
+    control: hidden
+    entities:
+       - sensor.humidity_158d0001f53215
+       - sensor.temperature_158d0001f53215
+       - sensor.Pressure_158d0001f53215
+       - binary_sensor.door_window_sensor_158d000312da93
+       
+  kitchen:
+    name: Кухня
+    control: hidden
+    entities:
+       - sensor.humidity_158d0001fa842b
+       - sensor.temperature_158d0001fa842b
+       - sensor.Pressure_158d0001fa842b
+       - sensor.illumination_f0b429b3f110
+       - binary_sensor.door_window_sensor_158d000312e3c9
+       
+  corridor:
+    name: Коридор
+    control: hidden
+    entities:
+      - sensor.corridor_temperature
+      - sensor.corridor_humidity
+      - sensor.corridor_ambient_light
+      - binary_sensor.pir_sensor
+      - binary_sensor.motion_sensor_158d000257d71d
+      - sensor.illumination_158d000257d71d
+      - binary_sensor.motion_sensor_158d00030213a9
+      - sensor.illumination_158d00030213a9
+      - binary_sensor.door_window_sensor_158d000106d134
+      - timer.corridor
+      - timer.night_light_t
+
+
+  system_information:
+    name: Система
+    control: hidden
+    entities:
+       - sensor.time
+       - sensor.date
+       - sensor.cpu_temperature
+       - sensor.processor_use
+       - sensor.memory_use_percent
+       - sensor.disk_use_percent
+       - sensor.last_boot_custom
+       - sensor.disk_free
+       - sensor.last_boot
+
+  power_m365_monitor:
+    name: m365
+    control: hidden
+    entities:
+       - sensor.xiaomi_miija_m365
+       - sensor.mqtt_power_today_xiaomi_miija_m365
+       - sensor.mqtt_power_today_night_xiaomi_miija_m365
+       - sensor.mqtt_power_yesterday_xiaomi_miija_m365
+       - sensor.mqtt_power_yesterday_night_xiaomi_miija_m365
+       - sensor.mqtt_power_month_xiaomi_miija_m365
+       - sensor.mqtt_power_month_night_xiaomi_miija_m365
+       - sensor.mqtt_power_lastmonth_xiaomi_miija_m365
+       - sensor.mqtt_power_lastmonth_night_xiaomi_miija_m365
+       - sensor.money_month_xiaomi_miija_m365
+       - sensor.money_month_night_xiaomi_miija_m365
+       - sensor.money_lastmonth_xiaomi_miija_m365
+       - sensor.money_lastmonth_night_xiaomi_miija_m365
+
+  power_TVzal_monitor:
+    name: TVzal
+    control: hidden
+    entities:
+       - sensor.xiaomi_power_strip
+       - sensor.mqtt_power_today_xiaomi_power_strip
+       - sensor.mqtt_power_today_night_xiaomi_power_strip
+       - sensor.mqtt_power_yesterday_xiaomi_power_strip
+       - sensor.mqtt_power_yesterday_night_xiaomi_power_strip
+       - sensor.mqtt_power_month_xiaomi_power_strip
+       - sensor.mqtt_power_month_night_xiaomi_power_strip
+       - sensor.mqtt_power_lastmonth_xiaomi_power_strip
+       - sensor.mqtt_power_lastmonth_night_xiaomi_power_strip
+       - sensor.money_month_xiaomi_power_strip
+       - sensor.money_month_night_xiaomi_power_strip
+       - sensor.money_lastmonth_xiaomi_power_strip
+       - sensor.money_lastmonth_night_xiaomi_power_strip
+
+  Batt_monitor:
+    name: Batt
+    control: hidden
+    entities:
+      - sensor.entrance_motion_sensor_158d000257d71d_battery
+      - sensor.entrance_motion_sensor_158d00030213a9_battery
+      - sensor.bedroom_motion_sensor_158d00032be76c_battery
+      - sensor.entrance_door_window_sensor_158d000106d134_battery
+      - sensor.zal_window_sensor_158d0002f92121_battery
+      - sensor.kitchen_window_sensor_158d000312e3c9_battery
+      - sensor.bedroom_window_sensor_158d000312da93_battery
+      - sensor.kitchen_humidity_158d0001fa842b_battery
+      - sensor.bedroom_humidity_158d0001f53215_battery
+      - sensor.zal_humidity_158d00010d6b34_battery
+      - sensor.zal_switch_158d000255ef47_battery
+      - sensor.zal_switch_158d000214e287_battery
+      - sensor.bedroom_switch_158d000214e38b_battery

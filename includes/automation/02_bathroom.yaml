@@ -1,0 +1,133 @@
+################################################################################
+##                      Управление освещением                                 ##
+################################################################################
+
+## Автоматическое включение света
+  - alias: bathroom_enter_light
+    trigger:
+     platform: state
+     entity_id: binary_sensor.motion_sensor_158d00032be76c
+#     from: 'off'
+     to: 'on'
+    condition:
+    - condition: numeric_state
+      entity_id: sensor.illumination_158d00032be76c
+      below: 20
+    action:
+      - service: light.turn_on
+        entity_id:
+          - light.bathroom_chandelier
+
+################################################################################
+##                      Управление теплым полом                               ##
+################################################################################
+
+#Установка температуры теплого пола (УТРО)
+  - alias: bathroom_thermostat_morning_01
+    trigger:
+      platform: time
+      at: "04:30:00"
+    condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    action:
+      - service: climate.set_temperature
+        data:
+          entity_id: climate.533007262462ab08a7fb
+          temperature: 32
+
+#Установка температуры теплого пола (УТРО)
+  - alias: bathroom_thermostat_morning_02
+    trigger:
+      platform: time
+      at: "07:10:00"
+    condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    action:
+      - service: climate.set_temperature
+        data:
+          entity_id: climate.533007262462ab08a7fb
+          temperature: 27
+
+#Установка температуры теплого пола (Вечер)
+  - alias: bathroom_thermostat_evening_01
+    trigger:
+      platform: time
+      at: "15:30:00"
+    condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    action:
+      - service: climate.set_temperature
+        data:
+          entity_id: climate.533007262462ab08a7fb
+          temperature: 32
+
+#Установка температуры теплого пола (Вечер)
+  - alias: bathroom_thermostat_evening_02
+    trigger:
+      platform: time
+      at: "23:00:00"
+    condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    action:
+      - service: climate.set_temperature
+        data:
+          entity_id: climate.533007262462ab08a7fb
+          temperature: 27
+
+################################################################################
+
+#Установка температуры теплого пола (УТРО Выходной)
+  - alias: bathroom_thermostat_holiday_morning_01
+    trigger:
+      platform: time
+      at: "05:30:00"
+    condition:
+    - condition: time
+      weekday:
+        - sat
+        - sun
+    action:
+      - service: climate.set_temperature
+        data:
+          entity_id: climate.533007262462ab08a7fb
+          temperature: 32
+
+#Установка температуры теплого пола (УТРО Выходной)
+  - alias: bathroom_thermostat_holiday_morning_02
+    trigger:
+      platform: time
+      at: "09:30:00"
+    condition:
+    - condition: time
+      weekday:
+        - sat
+        - sun
+    action:
+      - service: climate.set_temperature
+        data:
+          entity_id: climate.533007262462ab08a7fb
+          temperature: 27

@@ -1,0 +1,274 @@
+tv_on_off:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VDAA8CAABYAgAAegYAAFMRAAC9EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0ISEhAQEBAQEhISEBAQEBAQEhAQEBAQEBIQEhISEhISEB
+tv_ch_down:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6XLAC4CAACTBgAAfREAAKARAAA0twAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyEBAQAAAAAAAQEBAAAAAAAAAAAAAQAAAAEBAQEAAQEBBAMhAQEAAAAAAAEBAQAAAAAAAAAAAAEAAAABAQEBAAEBAQQDIQEBAAAAAAABAQEAAAAAAAAAAAABAAAAAQEBAQABAQEAA
+tv_ch_up:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6XLACwCAACaBgAAeBEAAKURAAA0twAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyEBAQAAAAAAAQEBAAAAAAAAAQAAAQAAAAEAAQEAAQEBBAMhAQEAAAAAAAEBAQAAAAAAAAEAAAEAAAABAAEBAAEBAQQDIQEBAAAAAAABAQEAAAAAAAABAAABAAAAAQABAQABAQEAA
+tv_vol_up:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6XLACsCAACeBgAAehEAAKcRAAA0twAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyEBAQAAAAAAAQEBAAAAAAABAQEAAAAAAAAAAAEBAQEBBAMhAQEAAAAAAAEBAQAAAAAAAQEBAAAAAAAAAAABAQEBAQQDIQEBAAAAAAABAQEAAAAAAAEBAQAAAAAAAAAAAQEBAQEAA
+tv_vol_down:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6XLACwCAACdBgAAeREAAKcRAAA0twAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyEBAQAAAAAAAQEBAAAAAAABAQABAAAAAAAAAQABAQEBBAMhAQEAAAAAAAEBAQAAAAAAAQEAAQAAAAAAAAEAAQEBAQQDIQEBAAAAAAABAQEAAAAAAAEBAAEAAAAAAAABAAEBAQEAA
+sound_on_off:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VLADECAACbBgAAvggAAIYRAAApIwAA3JsAAGR3AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0AAAAEBAQEAAQEBAAAAAAEAAAEBAAABAQEBAAABAQAABQJGAkAA
+sound_tv_mode:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VPAC8CAACfBgAAvQgAAIYRAAApIwAA3JsAAGR3AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0AAAAEBAQEAAQEBAAAAAAEBAQEBAQABAQAAAAAAAQAABQJGAkYCQA
+sound_aux:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VRAGYAAAAYAgAATAIAAH0GAACcCAAAZBEAAEsjAADcmwAABFUBAAB3AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABWEhISMjIyMhIyMjISEhISMjISEjISEjISEjIyEjIyEjJyRpJGkkaCAA
+sound_vol_up:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VPADoCAACCBgAAsQgAAGgRAAA7IwAA3JsAAAB3AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0AAAAEBAQEAAQEBAAAAAAEAAQEBAQAAAAEAAAAAAQEBBQJGAkYCQA
+sound_vol_down:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VLABcCAABPAgAAeQYAAJgIAABiEQAATiMAANybAAAAdwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFAQEBISEhIQEhISEBAQEBISEhISEhAQEBAQEBAQEhISFhNXE1AQ
+
+tv_ok_button:
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6XLAC0CAACWBgAAfBEAAKERAAA0twAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyEBAQAAAAAAAQEBAAAAAAAAAAABAAEBAAEBAQABAAABBAMhAQEAAAAAAAEBAQAAAAAAAAAAAQABAQABAQEAAQAAAQQDIQEBAAAAAAABAQEAAAAAAAAAAAEAAQEAAQEBAAEAAAEAA=
+      
+start_pil:
+  sequence:
+  - service: vacuum.start
+    entity_id:
+    - vacuum.roborock
+stop_pil:
+  sequence:
+  - service: vacuum.stop
+    entity_id:
+    - vacuum.roborock
+go_rtb:
+  sequence:
+  - service: vacuum.return_to_base
+    entity_id:
+    - vacuum.roborock
+
+
+tv_stand_rainbow:
+  sequence:
+  - service: light.turn_on
+    entity_id: light.wled
+    data:
+      effect: Rainbow
+      brightness: 135
+
+tv_stand_multi_comet:
+  sequence:
+  - service: light.turn_on
+    entity_id: light.wled
+    data:
+      effect: Multi Comet
+
+tv_stand_fireworks:
+  sequence:
+  - service: light.turn_on
+    entity_id: light.wled
+    data:
+      effect: Fireworks
+
+tv_stand_random_twinkle:
+  sequence:
+  - service: light.turn_on
+    entity_id: light.wled
+    data:
+      effect: Ripple
+
+
+music_mode:
+  alias: режим музыки
+  sequence:
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VDAA8CAABYAgAAegYAAFMRAAC9EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0ISEhAQEBAQEhISEBAQEBAQEhAQEBAQEBIQEhISEhISEB
+  - delay: 00:00:01
+  - service: light.turn_on
+    entity_id: light.tv_stand_light
+    data:
+      effect: Fireworks
+      brightness: 242
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VLADECAACbBgAAvggAAIYRAAApIwAA3JsAAGR3AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0AAAAEBAQEAAQEBAAAAAAEAAAEBAAABAQEBAAABAQAABQJGAkAA
+  - delay: 00:00:01
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VPAC8CAACfBgAAvQgAAIYRAAApIwAA3JsAAGR3AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0AAAAEBAQEAAQEBAAAAAAEBAQEBAQABAQAAAAAAAQAABQJGAkYCQA
+  - delay: 00:00:01
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6XLADcCAAB3BgAAgREAAJ8RAAA0twAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjEBAQAAAAAAAQEBAAAAAAAAAAEAAAAAAAEBAAEBAQEBBAIxAQEAAAAAAAEBAQAAAAAAAAABAAAAAAABAQABAQEBAQQCMQEBAAAAAAABAQEAAAAAAAAAAQAAAAAAAQEAAQEBAQEAA
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6XLAC4CAACUBgAAgBEAAKERAAA0twAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyEBAQAAAAAAAQEBAAAAAAAAAAEBAAAAAAEBAAABAQEBBAMhAQEAAAAAAAEBAQAAAAAAAAABAQAAAAABAQAAAQEBAQQDIQEBAAAAAAABAQEAAAAAAAAAAQEAAAAAAQEAAAEBAQEAA
+  - delay: 00:00:01
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6XLAC4CAACWBgAAfhEAAKMRAAA0twAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyEBAQAAAAAAAQEBAAAAAAABAQEBAAAAAAAAAAABAQEBBAMhAQEAAAAAAAEBAQAAAAAAAQEBAQAAAAAAAAAAAQEBAQQDIQEBAAAAAAABAQEAAAAAAAEBAQEAAAAAAAAAAAEBAQEAA
+  - delay: 00:00:01
+  - service: remote.send_command
+    entity_id:
+    - remote.irremote
+    data:
+      command: Z6VLADoCAACBBgAAnQgAAGURAABLIwAA3JsAAAB3AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0AAAAEBAQEAAQEBAAAAAAEAAAAAAQABAAEBAQEAAQABBQJGAkAA
+vacuum_service_mode:
+  alias: движение пылесоса вперед
+  sequence:
+  - service: vacuum.xiaomi_remote_control_start
+    entity_id: vacuum.roborock
+  - delay: 00:00:13
+  - service: vacuum.xiaomi_remote_control_move
+    entity_id: vacuum.roborock
+    data:
+      duration: 2000
+      velocity: 0.2
+      rotation: 0
+  - delay: 00:00:02
+  - service: vacuum.xiaomi_remote_control_move
+    entity_id: vacuum.roborock
+    data:
+      duration: 0
+      velocity: 0.2
+      rotation: 40
+  - delay: 00:00:03
+  - service: vacuum.xiaomi_remote_control_move
+    entity_id: vacuum.roborock
+    data:
+      duration: 12000
+      velocity: 0.2
+      rotation: 0
+  - delay: 00:00:13
+  - service: vacuum.xiaomi_remote_control_stop
+vacuum_goto_kitchen:
+  alias: Уборка на кухне
+  sequence:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.roborock
+      command: app_goto_target
+      params:
+      - 16000
+      - 22300
+  - delay: 00:01:20
+  - service: vacuum.clean_spot
+    data:
+      entity_id: vacuum.roborock
+  - delay: 00:02:15
+  - service: vacuum.return_to_base
+    data:
+      entity_id: vacuum.roborock
+vacuum_goto_hall:
+  alias: Уборка в зале
+  sequence:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.roborock
+      command: app_goto_target
+      params:
+      - 17600
+      - 28800
+  - delay: 00:01:13
+  - service: vacuum.clean_spot
+    data:
+      entity_id: vacuum.roborock
+  - delay: 00:02:40
+  - service: vacuum.return_to_base
+    data:
+      entity_id: vacuum.roborock
+vacuum_goto_2:
+  alias: 'Уборка коврика'
+  sequence:
+  - data:
+      command: app_goto_target
+      entity_id: vacuum.roborock
+      params:
+      - 18500 ##по оси X
+      - 22300 
+    service: vacuum.send_command
+  - delay: 00:01:20
+  - data:
+      entity_id: vacuum.roborock
+    service: vacuum.clean_spot
+  - delay: 00:02:15
+  - data:
+      entity_id: vacuum.roborock
+    service: vacuum.return_to_base
+vacuum_goto_3:
+  alias: 'Уборка коридора'
+  sequence:
+  - data:
+      command: app_goto_target
+      entity_id: vacuum.roborock
+      params:
+      - 20000 ##по оси X
+      - 23500 
+    service: vacuum.send_command
+  - delay: 00:00:55
+  - data:
+      entity_id: vacuum.roborock
+    service: vacuum.clean_spot
+  - delay: 00:02:20
+  - data:
+      entity_id: vacuum.roborock
+    service: vacuum.return_to_base

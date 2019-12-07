@@ -1,0 +1,810 @@
+title: DWHome
+views:
+  - badges:
+      - binary_sensor.amazfit
+      - binary_sensor.miband2
+      - sensor.yr_symbol
+      - sun.sun
+      - timer.night_light_t
+      - timer.corridor
+      - timer.corridor_idle
+      - timer.check_light
+    cards:
+      - entity: weather.openweathermap
+        type: weather-forecast
+      - entities:
+          - entity: sensor.humidity_158d0001fa842b
+            name: Влажность
+          - entity: sensor.temperature_158d0001fa842b
+            name: Температура
+          - entity: sensor.pressure_158d0001fa842b
+            name: Давление
+          - entity: binary_sensor.door_window_sensor_158d000312e3c9
+            name: Окно
+            secondary_info: last-changed
+          - type: divider
+          - entity: water_heater.g200s
+          - entity: switch.kettle_work
+            icon: 'mdi:kettle'
+            name: Чайник
+          - entity: sensor.xiaomi_miija_m365
+            name: Потребление холодильник
+        show_header_toggle: false
+        title: Кухня
+        type: entities
+      - entities:
+          - entity: sensor.corridor_humidity
+            name: Влажность
+          - entity: sensor.corridor_temperature
+            name: Температура
+          - entity: binary_sensor.door_window_sensor_158d000106d134
+            name: Входная дверь
+            secondary_info: last-changed
+          - type: divider
+          - entity: binary_sensor.pir_sensor
+            name: Датчик движения (вход)
+            secondary_info: last-changed
+          - entity: sensor.corridor_ambient_light
+            name: Освещенность (вход)
+          - entity: binary_sensor.motion_sensor_158d000257d71d
+            name: Датчик движения (кухня)
+            secondary_info: last-changed
+          - entity: sensor.illumination_158d000257d71d
+            name: Освещенность (кухня)
+          - entity: binary_sensor.motion_sensor_158d00030213a9
+            name: Датчик движения (ванна)
+            secondary_info: last-changed
+          - entity: sensor.illumination_158d00030213a9
+            name: Освещенность (ванна)
+          - type: divider
+          - entity: light.corridor_chandelier
+            name: Освещение
+            secondary_info: last-changed
+          - entity: light.gateway_light_f0b429b3f110
+            name: Ночник
+            secondary_info: last-changed
+        show_header_toggle: false
+        title: Коридор
+        type: entities
+      - entities:
+          - entity: sensor.humidity_158d00010d6b34
+            name: Влажность
+          - entity: sensor.temperature_158d00010d6b34
+            name: Температура
+          - entity: binary_sensor.door_window_sensor_158d0002f92121
+            name: Окно
+            secondary_info: last-changed
+          - type: divider
+          - entity: cover.time_based_cover
+            name: Рулонная штора
+          - type: divider
+          - entity: sensor.xiaomi_power_strip
+            name: Потребление телевизор
+          - entity: light.hall_chandelier_lights_3
+            name: Тусклый свет
+          - entity: light.hall_chandelier_lights_5
+            name: Яркий свет
+          - entity: light.hall_table_lamp
+            icon: 'mdi:desk-lamp'
+            name: Настольный светильник
+          - entity: light.tv_stand_light
+            name: ТВ тумбочка
+        show_header_toggle: false
+        title: Зал
+        type: entities
+      - entities:
+          - entity: sensor.humidity_158d0001f53215
+            name: Влажность
+          - entity: sensor.temperature_158d0001f53215
+            name: Температура
+          - entity: sensor.pressure_158d0001f53215
+            name: Давление
+          - entity: binary_sensor.door_window_sensor_158d000312da93
+            name: Окно
+            secondary_info: last-changed
+          - type: divider
+          - entity: light.bedroom_chandelier_lights_2
+            name: Тусклый свет
+          - entity: light.bedroom_chandelier_lights_3
+            name: Яркий свет
+          - entity: light.mirror_light
+            name: Зеркало
+        show_header_toggle: false
+        title: Спальня
+        type: entities
+      - entities:
+          - entity: switch.xiaomi_power_strip
+            icon: 'mdi:power-socket-us'
+            name: ТВ удлинитель
+          - entity: switch.smart_wifi_socket
+            icon: 'mdi:power-socket-us'
+            name: Розетка зеркала
+          - entity: switch.plug_158d00024ef864
+            icon: 'mdi:ev-station'
+            name: Холодильник
+          - entity: switch.plug_158d0002ecea0e
+            icon: 'mdi:battery-charging-60'
+            name: Зарядка телефона
+          - entity: switch.livolo_1_2
+            icon: 'mdi:remote'
+            name: Livolo 1 (коридор)
+          - entity: switch.livolo_2
+            icon: 'mdi:remote'
+            name: Livolo 2 (ванна)
+          - entity: switch.livolo_3
+            icon: 'mdi:remote'
+            name: Livolo 3
+        show_header_toggle: false
+        title: Выключатель
+        type: entities
+      - entities:
+          - entity: script.go_rtb
+          - entity: script.start_pil
+          - entity: script.stop_pil
+          - entity: script.vacuum_goto_hall
+          - entity: script.vacuum_goto_kitchen
+          - entity: script.tv_stand_fireworks
+          - entity: script.tv_stand_rainbow
+        show_header_toggle: false
+        title: Скрипт
+        type: entities
+      - entities:
+          - vacuum.roborock
+        show_header_toggle: false
+        title: Пылесос
+        type: entities
+    icon: 'mdi:home'
+    panel: false
+    path: default_view
+    title: Home
+  - badges: []
+    cards:
+      - entities:
+          - entity: sensor.humidity_158d00010d6b34
+            name: Влажность
+          - entity: sensor.temperature_158d00010d6b34
+            name: Температура
+          - entity: binary_sensor.door_window_sensor_158d0002f92121
+            name: Окно
+          - entity: sensor.xiaomi_power_strip
+            name: Потребление телевизор
+        show_icon: true
+        show_name: false
+        show_state: true
+        title: Датчики
+        type: glance
+      - entities:
+          - entity: light.hall_chandelier_lights_3
+            name: Тусклый свет
+            tap_action:
+              action: toggle
+          - entity: light.hall_chandelier_lights_5
+            name: Яркий свет
+            tap_action:
+              action: toggle
+          - entity: light.hall_table_lamp
+            icon: 'mdi:desk-lamp'
+            name: Настольный светильник
+            tap_action:
+              action: toggle
+          - entity: light.tv_stand_light
+            hold_action:
+              action: more-info
+            name: ТВ тумбочка
+            tap_action:
+              action: toggle
+        title: Свет
+        type: glance
+      - cards:
+          - content: |
+              ## Управление TV 
+            type: markdown
+          - cards:
+              - entities:
+                  - entity: script.tv_on_off
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.tv_ch_up
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.tv_ch_down
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.tv_vol_down
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.tv_vol_up
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.tv_stand_rainbow
+                    icon: 'mdi:lightbulb-on-outline'
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+            type: horizontal-stack
+        type: vertical-stack
+      - cards:
+          - content: |
+              ## Управление Акустикой 
+            type: markdown
+          - cards:
+              - entities:
+                  - entity: script.sound_on_off
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.sound_aux
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.sound_tv_mode
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.sound_vol_down
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+              - entities:
+                  - entity: script.sound_vol_up
+                    tap_action:
+                      action: toggle
+                show_name: false
+                show_state: false
+                type: glance
+            type: horizontal-stack
+        type: vertical-stack
+      - entities:
+          - entity: binary_sensor.door_window_sensor_158d00031e7639
+            icon: 'mdi:arrow-collapse-down'
+            name: Датчик окна
+          - entity: cover.time_based_cover
+          - entity: cover.window
+          - entity: cover.blinds_stop
+            name: Доворот
+          - type: divider
+          - entity: automation.hall_blinds_close_01
+            icon: 'mdi:window-closed-variant'
+            name: Вкл свет? Закрою окно!
+          - entity: automation.hall_blinds_close_02
+            icon: 'mdi:window-closed-variant'
+            name: Стемнело и Вкл свет? Закрою!
+          - entity: automation.hall_window_open_00
+            icon: 'mdi:window-open-variant'
+            name: Открываем окно в будни
+          - entity: automation.hall_window_open_01
+            icon: 'mdi:window-open-variant'
+            name: Открываем окно в выходные
+          - type: divider
+          - entity: automation.hall_window_blinds_stop
+          - entity: automation.hall_window_blinds_stop_01
+          - entity: automation.hall_window_blinds_stop_02
+          - entity: automation.hall_window_blinds_stop_03
+        show_header_toggle: false
+        title: Окно
+        type: entities
+    icon: 'mdi:postage-stamp'
+    title: Гостиная
+  - badges: []
+    cards:
+      - cards:
+          - cards:
+              - entity: sensor.temperature_158d00010d6b34
+                max: 35
+                min: 15
+                name: Температура Зал
+                severity:
+                  normal: 0
+                  red: 27
+                  yellow: 24
+                type: gauge
+              - entity: sensor.humidity_158d00010d6b34
+                max: 90
+                min: 0
+                name: Влажность Зал
+                scale: 30px
+                severity:
+                  green: 30
+                  normal: 70
+                  yellow: 0
+                type: gauge
+            type: horizontal-stack
+        type: horizontal-stack
+      - cards:
+          - cards:
+              - entity: sensor.temperature_158d0001f53215
+                max: 35
+                min: 15
+                name: Температура Спальня
+                severity:
+                  normal: 0
+                  red: 27
+                  yellow: 24
+                type: gauge
+              - entity: sensor.humidity_158d0001f53215
+                max: 90
+                min: 0
+                name: Влажность Спальня
+                scale: 30px
+                severity:
+                  green: 30
+                  normal: 70
+                  yellow: 0
+                type: gauge
+            type: horizontal-stack
+        type: horizontal-stack
+      - cards:
+          - cards:
+              - entity: sensor.temperature_158d0001fa842b
+                max: 35
+                min: 15
+                name: Температура Кухня
+                severity:
+                  normal: 0
+                  red: 27
+                  yellow: 24
+                type: gauge
+              - entity: sensor.humidity_158d0001fa842b
+                max: 90
+                min: 0
+                name: Влажность Кухня
+                scale: 30px
+                severity:
+                  green: 30
+                  normal: 70
+                  yellow: 0
+                type: gauge
+            type: horizontal-stack
+        type: horizontal-stack
+      - cards:
+          - entity: sensor.pressure_mmhg_158d0001fa842b
+            graph: none
+            icon: 'mdi:gauge'
+            name: Атмосферное давление Кухня
+            type: sensor
+            unit: мм рт. ст.
+          - entity: sensor.pressure_mmhg_158d0001f53215
+            graph: none
+            icon: 'mdi:gauge'
+            name: Атмосферное давление Спальня
+            type: sensor
+            unit: мм рт. ст.
+          - entities:
+              - entity: sensor.pressure_mmhg_158d0001fa842b
+                name: Кухня
+              - entity: sensor.pressure_mmhg_158d0001f53215
+                name: Спальня
+            type: history-graph
+        type: vertical-stack
+      - cards:
+          - entity: sensor.termostat_temp
+            name: Теплый пол ванна
+            type: sensor
+          - entities:
+              - entity: sensor.termostat_temp
+                name: Текущее значение
+              - entity: sensor.termostat_set
+                name: Установленное значение
+            type: history-graph
+          - entities:
+              - climate.533007262462ab08a7fb
+            type: entities
+        type: vertical-stack
+      - cards:
+          - elements:
+              - entity: fan.xiaomi_miio_device
+                image: /local/power.png
+                state_filter:
+                  'off': brightness(80%) saturate(0.8)
+                  'on': brightness(200%) saturate(1.8)
+                style:
+                  left: 75%
+                  top: 10%
+                  width: 15%
+                tap_action:
+                  action: toggle
+                type: image
+              - entity: sensor.humidifier_level
+                style:
+                  font-family: Trebuchet MS
+                  font-size: 120%
+                  font-weight: bold
+                  left: 20%
+                  opacity: 0.9
+                  top: 50%
+                  transform: 'translate(0%,-50%)'
+                type: state-label
+              - entity: sensor.temperature_humidifier
+                style:
+                  font-family: Trebuchet MS
+                  font-size: 120%
+                  font-weight: bold
+                  left: 20%
+                  opacity: 0.9
+                  top: 90%
+                  transform: 'translate(0%,-50%)'
+                type: state-label
+              - entity: sensor.humidity_humidifier
+                style:
+                  font-family: Trebuchet MS
+                  font-size: 120%
+                  font-weight: bold
+                  left: 20%
+                  opacity: 0.9
+                  top: 80%
+                  transform: 'translate(0%,-50%)'
+                type: state-label
+            image: /local/humidifier.jpg
+            type: picture-elements
+          - entities:
+              - fan.xiaomi_miio_device
+            type: entities
+        type: vertical-stack
+    icon: 'mdi:oil-temperature'
+    title: Климат
+  - badges: []
+    cards:
+      - entities:
+          - entity: automation.charging_iphone_on
+            icon: 'mdi:battery-charging-60'
+            name: 'Включение зарядки 22:00'
+          - entity: automation.charging_iphone_off
+            icon: 'mdi:battery-charging-60'
+            name: 'Выключение зарядки 07:00'
+        show_header_toggle: false
+        title: Спальня
+        type: entities
+      - entities:
+          - entity: automation.push_notify_opendoor
+            icon: 'mdi:cellphone-iphone'
+            name: Уведомление / открытии двери
+          - entity: automation.push_notify_roborock_charging
+            icon: 'mdi:cellphone-iphone'
+            name: Уведомление / пылесос заряжается
+          - entity: automation.push_notify_holodos
+            icon: 'mdi:cellphone-iphone'
+            name: Уведомление / отключение холодильника
+        show_header_toggle: false
+        title: Уведомления
+        type: entities
+      - entities:
+          - entity: automation.kettle_06_30
+            icon: 'mdi:kettle'
+            name: 'Авто включение чайника (будни, 06:30)'
+        show_header_toggle: false
+        title: Кухня
+        type: entities
+      - entities:
+          - entity: automation.bathroom_enter_light
+            icon: 'mdi:lightbulb'
+            name: Авто включение света в ванной
+          - type: divider
+          - entity: automation.bathroom_thermostat_morning_01
+            icon: 'mdi:gauge'
+            name: 'Теплый пол на 30 (04:30 будни)'
+          - entity: automation.bathroom_thermostat_morning_02
+            icon: 'mdi:gauge'
+            name: 'Теплый пол на 23 (07:30 будни)'
+          - entity: automation.bathroom_thermostat_evening_01
+            icon: 'mdi:gauge'
+            name: 'Теплый пол на 30 (15:30 будни)'
+          - entity: automation.bathroom_thermostat_evening_02
+            icon: 'mdi:gauge'
+            name: 'Теплый пол на 25 (22:30 будни)'
+          - type: divider
+          - entity: automation.bathroom_thermostat_holiday_morning_01
+            icon: 'mdi:gauge'
+            name: 'Теплый пол на 30 (05:30 выходной)'
+          - entity: automation.bathroom_thermostat_holiday_morning_02
+            icon: 'mdi:gauge'
+            name: 'Теплый пол на 27 (09:30 выходной)'
+        show_header_toggle: false
+        title: Ванная
+        type: entities
+      - entities:
+          - entity: automation.hall_off_light_tvoff
+            icon: 'mdi:led-on'
+            name: Выключение освещения тумбочки
+          - entity: automation.hall_on_light_tvon_00
+            icon: 'mdi:led-on'
+            name: Включение освещения тумбочки (Радуга)
+          - entity: automation.hall_on_light_tvon_01
+            icon: 'mdi:led-on'
+            name: Включение освещения тумбочки (Мерцания)
+          - entity: automation.hall_on_light_tvon_02
+            icon: 'mdi:led-on'
+            name: Переключение освещения тумбочки (Радуга)
+          - entity: automation.hall_on_light_tvon_03
+            icon: 'mdi:led-on'
+            name: Переключение освещения тумбочки (Мерцания)
+        show_header_toggle: false
+        title: Зал
+        type: entities
+      - entities:
+          - entity: automation.turn_on_the_night_light
+            icon: 'mdi:weather-night'
+            name: Авто включение ночника
+          - entity: automation.corridor_enter_light_opendoor
+            icon: 'mdi:door-open'
+            name: Вкл света при открытии двери
+          - entity: automation.corr_light_auto_off_01
+            icon: 'mdi:camera-timer'
+            name: Авто выключение света коридора
+          - entity: automation.corridor_light_auto_on
+            icon: 'mdi:camera-timer'
+            name: Авто Включение света коридора
+        show_header_toggle: false
+        title: Коридор
+        type: entities
+    icon: 'mdi:home-assistant'
+    title: Автоматизации
+  - badges: []
+    cards:
+      - cards:
+          - content: |
+              ## Холодильник
+            type: markdown
+          - entity: sensor.xiaomi_miija_m365
+            name: Текущее потребление
+            type: sensor
+          - entities:
+              - entity: sensor.mqtt_power_today_xiaomi_miija_m365
+                icon: 'mdi:counter'
+                name: Потребление за день
+              - entity: sensor.mqtt_power_today_night_xiaomi_miija_m365
+                icon: 'mdi:counter'
+                name: Потребление за ночь
+              - entity: sensor.mqtt_power_yesterday_xiaomi_miija_m365
+                icon: 'mdi:counter'
+                name: Потребление за вчера день
+              - entity: sensor.mqtt_power_yesterday_night_xiaomi_miija_m365
+                icon: 'mdi:counter'
+                name: Потребление за вчера ночь
+              - entity: sensor.mqtt_power_month_xiaomi_miija_m365
+                icon: 'mdi:counter'
+                name: Потребление за месяц день
+              - entity: sensor.mqtt_power_month_night_xiaomi_miija_m365
+                icon: 'mdi:counter'
+                name: Потребление за месяц ночь
+              - entity: sensor.mqtt_power_lastmonth_xiaomi_miija_m365
+                icon: 'mdi:counter'
+                name: Потребление за прошлый месяц день
+              - entity: sensor.mqtt_power_lastmonth_night_xiaomi_miija_m365
+                icon: 'mdi:counter'
+                name: Потребление за прошлый месяц ночь
+              - entity: sensor.money_month_xiaomi_miija_m365
+                icon: 'mdi:cash'
+                name: Стоимость за текущий месяц день
+              - entity: sensor.money_month_night_xiaomi_miija_m365
+                icon: 'mdi:cash'
+                name: Стоимость за текущий месяц ночь
+              - entity: sensor.money_lastmonth_xiaomi_miija_m365
+                icon: 'mdi:cash'
+                name: Стоимость за прошлый месяц день
+              - entity: sensor.money_lastmonth_night_xiaomi_miija_m365
+                icon: 'mdi:cash'
+                name: Стоимость за прошлый месяц ночь
+            show_header_toggle: false
+            type: entities
+        type: vertical-stack
+      - cards:
+          - content: |
+              ## Телевизор в зале
+            type: markdown
+          - entity: sensor.xiaomi_power_strip
+            name: Текущее потребление
+            type: sensor
+          - entities:
+              - entity: sensor.mqtt_power_today_xiaomi_power_strip
+                icon: 'mdi:counter'
+                name: Потребление за день
+              - entity: sensor.mqtt_power_today_night_xiaomi_power_strip
+                icon: 'mdi:counter'
+                name: Потребление за ночь
+              - entity: sensor.mqtt_power_yesterday_xiaomi_power_strip
+                icon: 'mdi:counter'
+                name: Потребление за вчера день
+              - entity: sensor.mqtt_power_yesterday_night_xiaomi_power_strip
+                icon: 'mdi:counter'
+                name: Потребление за вчера ночь
+              - entity: sensor.mqtt_power_month_xiaomi_power_strip
+                icon: 'mdi:counter'
+                name: Потребление за месяц день
+              - entity: sensor.mqtt_power_month_night_xiaomi_power_strip
+                icon: 'mdi:counter'
+                name: Потребление за месяц ночь
+              - entity: sensor.mqtt_power_lastmonth_xiaomi_power_strip
+                icon: 'mdi:counter'
+                name: Потребление за прошлый месяц день
+              - entity: sensor.mqtt_power_lastmonth_night_xiaomi_power_strip
+                icon: 'mdi:counter'
+                name: Потребление за прошлый месяц ночь
+              - entity: sensor.money_month_xiaomi_power_strip
+                icon: 'mdi:cash'
+                name: Стоимость за текущий месяц день
+              - entity: sensor.money_month_night_xiaomi_power_strip
+                icon: 'mdi:cash'
+                name: Стоимость за текущий месяц ночь
+              - entity: sensor.money_lastmonth_xiaomi_power_strip
+                icon: 'mdi:cash'
+                name: Стоимость за прошлый месяц день
+              - entity: sensor.money_lastmonth_night_xiaomi_power_strip
+                icon: 'mdi:cash'
+                name: Стоимость за прошлый месяц ночь
+            show_header_toggle: false
+            type: entities
+        type: vertical-stack
+    icon: 'mdi:counter'
+    title: Расход электроэнергии
+  - badges: []
+    cards:
+      - cards:
+          - entities:
+              - entity: sensor.time
+                name: Время
+              - entity: sensor.date
+                name: Дата
+              - entity: sensor.last_boot_custom
+                icon: 'mdi:av-timer'
+                name: Сервер работает -
+              - type: divider
+              - entity: sensor.home_assistant_v2_db
+                icon: 'mdi:database'
+                name: home-assistant_v2.db
+              - action_name: Сжать
+                icon: 'mdi:database-minus'
+                name: База данных
+                service: recorder.purge
+                service_data:
+                  keep_days: 1
+                  repack: true
+                type: call-service
+            show_header_toggle: false
+            type: entities
+        type: vertical-stack
+      - cards:
+          - entity: sensor.cpu_temperature
+            max: 100
+            min: 0
+            name: CPU
+            severity:
+              green: 0
+              red: 80
+              yellow: 60
+            type: gauge
+        type: horizontal-stack
+      - cards:
+          - entities:
+              - entity: sensor.cpu_temperature
+                name: Температура CPU
+            type: history-graph
+          - entities:
+              - entity: sensor.disk_use_percent
+                name: Диск
+              - entity: sensor.memory_use_percent
+                name: ОЗУ
+              - entity: sensor.processor_use
+                name: Процессор
+            type: history-graph
+        type: vertical-stack
+      - cards:
+          - entity: sensor.processor_use
+            max: 100
+            min: 0
+            name: Процессор
+            severity:
+              green: 0
+              red: 90
+              yellow: 60
+            type: gauge
+          - entity: sensor.memory_use_percent
+            max: 100
+            min: 0
+            name: ОЗУ
+            severity:
+              green: 0
+              red: 90
+              yellow: 60
+            type: gauge
+        type: horizontal-stack
+      - cards:
+          - entity: sensor.disk_use_percent
+            max: 100
+            min: 0
+            name: Занято на диске
+            severity:
+              green: 0
+              red: 90
+              yellow: 60
+            type: gauge
+          - entity: sensor.disk_free
+            max: 16
+            min: 0
+            name: Свободно
+            severity:
+              green: 6
+              red: 1
+              yellow: 3
+            type: gauge
+            unit: ГБ
+        type: horizontal-stack
+    icon: 'mdi:desktop-tower-monitor'
+    title: Система
+  - badges: []
+    cards:
+      - entities:
+          - entity: sensor.zal_humidity_158d00010d6b34_battery
+            name: Климат
+          - entity: sensor.zal_switch_158d000255ef47_battery
+            name: Левый Выкл
+          - entity: sensor.zal_switch_158d000214e287_battery
+            name: Правый Выкл
+          - entity: sensor.zal_window_sensor_158d0002f92121_battery
+            name: Окно
+        title: Зал
+        type: glance
+      - entities:
+          - entity: sensor.entrance_motion_sensor_158d000257d71d_battery
+            name: ДД Кухня
+          - entity: sensor.entrance_motion_sensor_158d00030213a9_battery
+            name: ДД Ванна
+          - entity: sensor.entrance_door_window_sensor_158d000106d134_battery
+            name: Гиркон Дверь
+        title: Прихожая
+        type: glance
+      - entities:
+          - entity: sensor.bedroom_window_sensor_158d000312da93_battery
+            name: Окно
+          - entity: sensor.bedroom_humidity_158d0001f53215_battery
+            name: Климат
+          - entity: sensor.bedroom_switch_158d000214e38b_battery
+            name: Левый Выкл
+        title: Спальня
+        type: glance
+      - entities:
+          - entity: sensor.kitchen_humidity_158d0001fa842b_battery
+            name: Климат
+          - entity: sensor.kitchen_window_sensor_158d000312e3c9_battery
+            name: Гиркон Окно
+        title: Кухня
+        type: glance
+      - entities:
+          - entity: sensor.bedroom_motion_sensor_158d00032be76c_battery
+            name: ДД Ванна
+        title: Ванная
+        type: glance
+    icon: 'mdi:battery-charging-100'
+    title: Батарейки

@@ -1,0 +1,249 @@
+################################################################################
+#                            Энергомониторниг                                  #
+################################################################################
+
+  - alias: 00_power_conter
+    hide_entity: true
+    initial_state: true
+    trigger:
+      - platform: time_pattern
+        seconds: '/30'   # 30 сек расчет
+    condition:
+     - condition: time
+       after: '07:00:01'
+       before: '23:00:00'
+    action:
+    
+    ##Зарядка самоката
+      - service: mqtt.publish #Потребление за день
+        data_template:
+          topic: "power/xiaomi_miija_m365/today"
+          payload: '{{(states.sensor.mqtt_power_today_xiaomi_miija_m365.state | float +
+                      (states.sensor.xiaomi_miija_m365.state | float /120000))|round(5)}}'
+          retain: true
+      - service: mqtt.publish  #Потребление за месяц
+        data_template:
+          topic: "power/xiaomi_miija_m365/month"
+          payload: '{{(states.sensor.mqtt_power_month_xiaomi_miija_m365.state | float +
+                      (states.sensor.xiaomi_miija_m365.state | float /120000))|round(5)}}'
+          retain: true
+    
+    ##Гостинная/ Телевизор
+      - service: mqtt.publish #Потребление за день
+        data_template:
+          topic: "power/xiaomi_power_strip/today"
+          payload: '{{(states.sensor.mqtt_power_today_xiaomi_power_strip.state | float +
+                      (states.sensor.xiaomi_power_strip.state | float /120000))|round(5)}}'
+          retain: true
+      - service: mqtt.publish  #Потребление за месяц
+        data_template:
+          topic: "power/xiaomi_power_strip/month"
+          payload: '{{(states.sensor.mqtt_power_month_xiaomi_power_strip.state | float +
+                      (states.sensor.xiaomi_power_strip.state | float /120000))|round(5)}}'
+          retain: true
+
+#############################################################################################
+
+  - alias: 00_power_conter_night
+    hide_entity: true
+    initial_state: true
+    trigger:
+      - platform: time_pattern
+        seconds: '/30'   # 30 сек расчет
+    condition:
+     - condition: time
+       after: '23:00:01'
+       before: '07:00:00'
+    action:
+    
+    ##Зарядка самоката
+      - service: mqtt.publish #Потребление за день (ночной)
+        data_template:
+          topic: "power/xiaomi_miija_m365/today_night"
+          payload: '{{(states.sensor.mqtt_power_today_night_xiaomi_miija_m365.state | float +
+                      (states.sensor.xiaomi_miija_m365.state | float /120000))|round(5)}}'
+          retain: true
+      - service: mqtt.publish  #Потребление за месяц (ночной)
+        data_template:
+          topic: "power/xiaomi_miija_m365/month_night"
+          payload: '{{(states.sensor.mqtt_power_month_night_xiaomi_miija_m365.state | float +
+                      (states.sensor.xiaomi_miija_m365.state | float /120000))|round(5)}}'
+          retain: true
+
+    ##Гостинная/ Телевизор
+      - service: mqtt.publish #Потребление за день (ночной)
+        data_template:
+          topic: "power/xiaomi_power_strip/today_night"
+          payload: '{{(states.sensor.mqtt_power_today_night_xiaomi_power_strip.state | float +
+                      (states.sensor.xiaomi_power_strip.state | float /120000))|round(5)}}'
+          retain: true
+      - service: mqtt.publish  #Потребление за месяц (ночной)
+        data_template:
+          topic: "power/xiaomi_power_strip/month_night"
+          payload: '{{(states.sensor.mqtt_power_month_night_xiaomi_power_strip.state | float +
+                      (states.sensor.xiaomi_power_strip.state | float /120000))|round(5)}}'
+          retain: true
+
+###############################################################################################
+
+  - alias: 00_power_new_day  # Начало дня
+    hide_entity: true
+    initial_state: true
+    trigger:
+      - platform: time
+        at: '00:00:05'
+    action:
+        # Запись данных за прошедший день
+        
+    ##Зарядка самоката
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_miija_m365/yesterday"
+          payload: '{{(states.sensor.mqtt_power_today_xiaomi_miija_m365.state | float )|round(5)}}'
+          retain: true 
+      - delay: 00:00:05
+        # Обнуление данных текущего дня
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_miija_m365/today"
+          payload: '{{ 0.0 }}'
+          retain: true
+
+    ##Гостинная/ Телевизор
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_power_strip/yesterday"
+          payload: '{{(states.sensor.mqtt_power_today_xiaomi_power_strip.state | float )|round(5)}}'
+          retain: true 
+      - delay: 00:00:05
+        # Обнуление данных текущего дня
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_power_strip/today"
+          payload: '{{ 0.0 }}'
+          retain: true
+
+##################################################################################################
+
+  - alias: 00_power_new_day_night  # Начало дня (ночной)
+    hide_entity: true
+    initial_state: true
+    trigger:
+      - platform: time
+        at: '00:00:05'
+    action:
+        # Запись данных за прошедший день
+
+    ##Зарядка самоката
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_miija_m365/yesterday_night"
+          payload: '{{(states.sensor.mqtt_power_today_night_xiaomi_miija_m365.state | float )|round(5)}}'
+          retain: true 
+      - delay: 00:00:05
+        # Обнуление данных текущего дня
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_miija_m365/today_night"
+          payload: '{{ 0.0 }}'
+          retain: true
+
+    ##Гостинная/ Телевизор
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_power_strip/yesterday_night"
+          payload: '{{(states.sensor.mqtt_power_today_night_xiaomi_power_strip.state | float )|round(5)}}'
+          retain: true 
+      - delay: 00:00:05
+        # Обнуление данных текущего дня
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_power_strip/today_night"
+          payload: '{{ 0.0 }}'
+          retain: true
+
+#####################################################################################################
+
+     # Начало месяца
+  - alias: 00_power_new_month
+    hide_entity: true
+    initial_state: true
+    trigger:
+      - platform: time
+        at: '00:00:10'
+    condition:
+      - condition: template
+        value_template: '{{ now().day == 1 }}'
+    action:
+        # Запись данных за прошедший месяц
+
+    ##Зарядка самоката
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_miija_m365/lastmonth"
+          payload: '{{(states.sensor.mqtt_power_month_xiaomi_miija_m365.state | float )|round(5)}}'
+          retain: true 
+      - delay: 00:00:05
+      # Обнуление данных текущего месяца
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_miija_m365/month"
+          payload: '{{ 0.0 }}'
+          retain: true
+
+    ##Гостинная/ Телевизор
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_power_strip/lastmonth"
+          payload: '{{(states.sensor.mqtt_power_month_xiaomi_power_strip.state | float )|round(5)}}'
+          retain: true 
+      - delay: 00:00:05
+      # Обнуление данных текущего месяца
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_power_strip/month"
+          payload: '{{ 0.0 }}'
+          retain: true
+
+#####################################################################################################
+
+     # Начало месяца (Ночной)
+  - alias: 00_power_new_month_night
+    hide_entity: true
+    initial_state: true
+    trigger:
+      - platform: time
+        at: '00:00:10'
+    condition:
+      - condition: template
+        value_template: '{{ now().day == 1 }}'
+    action:
+        # Запись данных за прошедший месяц
+        
+    ##Зарядка самоката
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_miija_m365/lastmonth_night"
+          payload: '{{(states.sensor.mqtt_power_month_night_xiaomi_miija_m365.state | float )|round(5)}}'
+          retain: true 
+      - delay: 00:00:05
+      # Обнуление данных текущего месяца
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_miija_m365/month_night"
+          payload: '{{ 0.0 }}'
+          retain: true
+
+    ##Гостинная/ Телевизор
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_power_strip/lastmonth_night"
+          payload: '{{(states.sensor.mqtt_power_month_night_xiaomi_power_strip.state | float )|round(5)}}'
+          retain: true 
+      - delay: 00:00:05
+      # Обнуление данных текущего месяца
+      - service: mqtt.publish
+        data_template:
+          topic: "power/xiaomi_power_strip/month_night"
+          payload: '{{ 0.0 }}'
+          retain: true

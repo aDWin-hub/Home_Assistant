@@ -1,0 +1,129 @@
+################################################################################
+#                                   Зал/Гостинная                              #
+################################################################################
+
+#Управление светом с радиовыключателей в ЗАЛЕ
+#Управление светом с левого радиовыключателя
+  - alias: left_handhold_switch_LeftBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_left_158d000255ef47
+        click_type: single
+    action:
+      service: light.toggle
+      entity_id: light.hall_chandelier_lights_5
+
+  - alias: left_handhold_switch_RightBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_right_158d000255ef47
+        click_type: single
+    action:
+      service: light.toggle
+      entity_id: light.hall_chandelier_lights_3
+      
+  - alias: left_handhold_switch_BothBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_both_158d000255ef47
+        click_type: both
+    action:
+      service: switch.toggle
+      entity_id: switch.hall_switch_tvstand
+
+#Управление светом с правого радиовыключателя
+  - alias: right_handhold_switch_LeftBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_left_158d000214e287
+        click_type: single
+    action:
+      service: light.toggle
+      entity_id: light.hall_chandelier_lights_5
+
+  - alias: right_handhold_switch_RightBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_right_158d000214e287
+        click_type: single
+    action:
+      service: light.toggle
+      entity_id: light.hall_chandelier_lights_3
+
+  - alias: right_handhold_switch_BothBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_both_158d000214e287
+        click_type: both
+    action:
+      service: switch.toggle
+      entity_id: switch.hall_switch_tvstand
+
+################################################################################
+#                                   Спальня                                    #
+################################################################################
+
+#Управление светом с радиовыключателей в СПАЛЬНЕ
+#Управление светом с левого радиовыключателя
+  - alias: left_bed_switch_LeftBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_left_158d000214e38b
+        click_type: single
+    action:
+      service: light.toggle
+      entity_id: light.bedroom_chandelier_lights_2
+      
+  - alias: left_bed_switch_RightBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_right_158d000214e38b
+        click_type: single
+    action:
+      service: light.toggle
+      entity_id: light.bedroom_chandelier_lights_3
+      
+  - alias: left_bed_switch_BothBtn
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.wall_switch_both_158d000214e38b
+        click_type: both
+    action:
+      service: light.toggle
+      entity_id: light.mirror_light

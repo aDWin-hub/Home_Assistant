@@ -1,0 +1,75 @@
+switch.wall_switch_left_158d00012f7851:
+  hidden: true
+switch.wall_switch_right_158d00012f7851:
+  hidden: true
+switch.old_xiaomi_mi_smart_wifi_socket:
+  icon: mdi:power
+switch.xiaomi_smart_power_strip:
+  icon: mdi:power
+switch.plug_158d00024ef864:
+  icon: mdi:power-socket
+light.gateway_light_f0b429b3f110:
+  icon: mdi:brightness-3
+light.tablelamp:
+  icon: mdi:white-balance-incandescent
+script.tv_on_off:
+  icon: mdi:power
+script.go_rtb:
+  icon: mdi:home-variant
+script.stop_pil:
+  icon: mdi:pause-circle-outline
+script.start_pil:
+  icon: mdi:broom
+script.tv_ch_up:
+  icon: mdi:chevron-up
+script.tv_ch_down:
+  icon: mdi:chevron-down
+switch.corridor_light:
+  hidden: false
+switch.wall_switch_left_158d00031476c3:
+  hidden: true
+switch.wall_switch_right_158d00031476c3:
+  hidden: true
+script.tv_power:
+  icon: mdi:power
+script.tv_vol_up:
+  icon: mdi:volume-high
+script.tv_vol_down:
+  icon: mdi:volume-low
+light.corridor_chandelier:
+  icon: mdi:spotlight-beam
+light.hall_chandelier_lights_3:
+  icon: mdi:ceiling-light
+light.hall_chandelier_lights_5:
+  icon: mdi:ceiling-light
+light.tv_stand_light:
+  icon: mdi:lamp
+light.bedroom_chandelier_lights_2:
+  icon: mdi:ceiling-light
+light.bedroom_chandelier_lights_3:
+  icon: mdi:ceiling-light
+script.sound_tv_mode:
+  icon: mdi:television
+script.sound_on_off:
+  icon: mdi:power
+script.sound_aux:
+  icon: mdi:audio-video
+script.sound_vol_down:
+  icon: mdi:volume-minus
+script.sound_vol_up:
+  icon: mdi:volume-plus
+binary_sensor.door_window_sensor_158d0002f92121:
+  device_class: window
+binary_sensor.door_window_sensor_158d000312e3c9:
+  device_class: window
+binary_sensor.door_window_sensor_158d000106d134:
+  device_class: door
+binary_sensor.door_window_sensor_158d000312da93:
+  device_class: window
+binary_sensor.amazfit:
+  device_class: presence
+binary_sensor.miband2:
+  device_class: presence
+script.tv_ok_button:
+  icon: mdi:pokeball
+light.wled: {}

@@ -1,0 +1,81 @@
+  - platform: xiaomi_miio
+    name: smart_wifi_socket
+    host: 192.168.1.90
+    token: !secret switch_miio_wifi_token
+    model: chuangmi.plug.m1
+    
+  - platform: xiaomi_miio
+    name: xiaomi_power_strip
+    host: 192.168.1.176
+    token: !secret switch_miio_power_token
+    model: qmi.powerstrip.v1
+
+##  - platform: command_line
+##    switches:
+##      corridor_light123:
+##        command_on: "python /config/custom_components/switch/livolo.py on"
+##        command_off: "python /config/custom_components/switch/livolo.py off"
+##        friendly_name: corridor_lightswitch123
+
+  - platform: template
+    switches:
+      kettle_work:
+        value_template: "{{ is_state ('water_heater.g200s', 'electric') }}"
+        turn_on:
+          service: water_heater.set_operation_mode
+          data:
+            entity_id: water_heater.g200s
+            operation_mode: electric
+        turn_off:
+          service: water_heater.set_operation_mode
+          data:
+            entity_id: water_heater.g200s
+            operation_mode: 'off'
+
+      corridor_switch_light:
+        friendly_name: corridor_lightSwitch
+        value_template: "{{ states.sensor.corridor_ambient_light.state | float > 45 }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.Livolo_1
+        turn_off:
+          service: switch.turn_on
+          data:
+            entity_id: switch.Livolo_1
+
+      hall_switch_tvstand:
+        friendly_name: hall_tvStand_rainbow
+        value_template: "{{ is_state('light.wled', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          data:
+            entity_id: script.tv_stand_rainbow
+        turn_off:
+          service: light.turn_off
+          data:
+            entity_id: light.wled
+
+      samsung_tv_switch:
+        friendly_name: samsung_tv
+        value_template: "{{ states.sensor.xiaomi_power_strip.state | float > 45 }}"
+        turn_on:
+          service: script.turn_on
+          data:
+            entity_id: script.tv_on_off
+        turn_off:
+          service: script.turn_on
+          data:
+            entity_id: script.tv_on_off
+
+      bathroom_switch_light:
+        friendly_name: bathroom_lightSwitch
+        value_template: "{{ states.sensor.illumination_158d00032be76c.state | float > 20 }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.livolo_2
+        turn_off:
+          service: switch.turn_on
+          data:
+            entity_id: switch.livolo_2

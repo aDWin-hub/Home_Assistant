@@ -1,0 +1,304 @@
+################################################################################
+##                          Управление TV тумбой                              ##
+################################################################################
+
+## Автоматическое выключение тв тумбы вместе с телевизором
+  - alias: hall_off_light_tvoff
+    trigger:
+     platform: state
+     entity_id: switch.samsung_tv_switch
+     from: 'on'
+     to: 'off'
+    condition:
+    - condition: state
+      entity_id: light.wled
+      state: 'on'
+    action:
+      - service: light.turn_off
+        entity_id:
+          - light.wled
+
+## Автоматическое включение тв тумбы вместе с телевизором
+  - alias: hall_on_light_tvon_00
+    trigger:
+     platform: state
+     entity_id: switch.samsung_tv_switch
+     from: 'off'
+     to: 'on'
+    condition:
+    - condition: state
+      entity_id: light.wled
+      state: 'off'
+    - condition: or
+      conditions:
+       - condition: state
+         entity_id: light.hall_chandelier_lights_3
+         state: 'on' 
+       - condition: state
+         entity_id: light.hall_chandelier_lights_5
+         state: 'on' 
+    action:
+      service: script.turn_on
+      data:
+        entity_id: script.tv_stand_multi_comet
+
+  - alias: hall_on_light_tvon_01
+    trigger:
+     platform: state
+     entity_id: switch.samsung_tv_switch
+     from: 'off'
+     to: 'on'
+    condition:
+    - condition: state
+      entity_id: light.wled
+      state: 'off'
+    - condition: state
+      entity_id: light.hall_chandelier_lights_3
+      state: 'off' 
+    - condition: state
+      entity_id: light.hall_chandelier_lights_5
+      state: 'off' 
+    action:
+      service: script.turn_on
+      data:
+        entity_id: script.tv_stand_random_twinkle
+
+  - alias: hall_on_light_tvon_02
+    trigger:
+     - platform: state
+       entity_id: light.hall_chandelier_lights_3
+       from: 'off'
+       to: 'on'
+     - platform: state
+       entity_id: light.hall_chandelier_lights_5
+       from: 'off'
+       to: 'on'
+    condition:
+    - condition: state
+      entity_id: light.wled
+      state: 'on'
+    action:
+      service: script.turn_on
+      data:
+        entity_id: script.tv_stand_multi_comet
+
+  - alias: hall_on_light_tvon_03
+    trigger:
+     - platform: state
+       entity_id: light.hall_chandelier_lights_3
+       from: 'on'
+       to: 'off'
+     - platform: state
+       entity_id: light.hall_chandelier_lights_5
+       from: 'on'
+       to: 'off'
+    condition:
+    - condition: state
+      entity_id: light.wled
+      state: 'on'
+    - condition: state
+      entity_id: light.hall_chandelier_lights_3
+      state: 'off' 
+    - condition: state
+      entity_id: light.hall_chandelier_lights_5
+      state: 'off' 
+    action:
+      service: script.turn_on
+      data:
+        entity_id: script.tv_stand_random_twinkle
+
+################################################################################
+##                      Управление увлажнителем                               ##
+################################################################################
+
+  -  alias: Увлажнитель, окно, выключение
+     trigger:
+     - platform: state
+       entity_id: binary_sensor.door_window_sensor_158d0002f92121
+       from: 'off'
+       to: 'on'
+     condition: []
+     action:
+     - service: fan.turn_off
+
+  -  alias: Увлажнитель, окно, включение
+     trigger:
+     - platform: state
+       entity_id: binary_sensor.door_window_sensor_158d0002f92121
+       from: 'on'
+       to: 'off'
+     condition: []
+     action:
+     - service: fan.turn_on
+
+################################################################################
+##                       Управление шторой в зале                             ##
+################################################################################
+
+## Если включили свет, а штора открыта и на улице темно, опускаем штору
+  - alias: hall_blinds_close_01
+    trigger:
+     - platform: state
+       entity_id: light.corridor_chandelier
+       from: 'off'
+       to: 'on'
+     - platform: state
+       entity_id: light.hall_chandelier_lights_3
+       from: 'off'
+       to: 'on'
+     - platform: state
+       entity_id: light.hall_chandelier_lights_5
+       from: 'off'
+       to: 'on'
+    condition:
+    - condition: state
+      entity_id: binary_sensor.door_window_sensor_158d00031e7639
+      state: 'off'
+    #проверка условия: или солнце село или еще не рассвет
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+          after_offset: "-00:40:00"
+        - condition: sun
+          before: sunrise
+          before_offset: "-03:30:00"
+    action:
+      service: cover.close_cover
+      data:
+        entity_id: cover.time_based_cover
+
+##Если солнце село, а свет включен и открыта штора, то закрываем
+  - alias: hall_blinds_close_02
+    trigger:
+     - platform: sun
+       event: sunset
+       offset: '-00:40:00'
+    condition:
+    - condition: state
+      entity_id: binary_sensor.door_window_sensor_158d00031e7639
+      state: 'off'
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: light.hall_chandelier_lights_3
+          state: 'on'
+        - condition: state
+          entity_id: light.hall_chandelier_lights_5
+          state: 'on'
+    action:
+      service: cover.close_cover
+      data:
+        entity_id: cover.time_based_cover
+
+################################################################################
+##Открываем шторы утром в будний день, если они не открыты
+  - alias: hall_window_open_00
+    trigger:
+      platform: time
+      at: "07:10:00"
+    condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: state
+      entity_id: binary_sensor.door_window_sensor_158d00031e7639
+      state: 'on'
+    action:
+      service: cover.open_cover
+      data:
+        entity_id: cover.time_based_cover
+
+##Открываем шторы утром в выходной, если они не открыты по датчику движения
+  - alias: hall_window_open_01
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_158d000257d71d
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_158d00030213a9
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.pir_sensor
+        to: 'on'
+    condition:
+    #только по выходным дням
+    - condition: time
+      weekday:
+        - sat
+        - sun
+    #до захода солнца и после восхода солнца (пока светло) 
+    #Необходимо выполнение сразу двух условий
+    - condition: sun
+      before: sunset
+      before_offset: "-03:00:00"
+    - condition: sun
+      after: sunrise
+    #Состояния шторы (закрыта) датчик положения открыт (в течении 4х часов)
+    - condition: state
+      entity_id: binary_sensor.door_window_sensor_158d00031e7639
+      state: 'on'
+      for:
+        hours: 4
+    action:
+      service: cover.open_cover
+      data:
+        entity_id: cover.time_based_cover
+
+################################################################################
+## Остановка шторы по датчику и доворачиваем мотор
+  - alias: hall_window_blinds_stop
+    trigger:
+     - platform: state
+       entity_id: binary_sensor.door_window_sensor_158d00031e7639
+       from: 'on'
+       to: 'off'
+    action:
+      - service: cover.open_cover
+        data:
+          entity_id: cover.blinds_stop
+      - service: cover.stop_cover
+        data:
+          entity_id: cover.window
+
+## Доворачивание мотора при остановке в центре (только в time_based_cover)
+  - alias: hall_window_blinds_stop_01
+    trigger:
+     - platform: state
+       entity_id: cover.time_based_cover
+       from: 'opening'
+       to: 'open'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_158d00031e7639
+        state: 'on'
+    action:
+      - service: cover.open_cover
+        data:
+          entity_id: cover.blinds_stop
+
+  - alias: hall_window_blinds_stop_02
+    trigger:
+     - platform: state
+       entity_id: cover.time_based_cover
+       from: 'closing'
+       to: 'closed'
+    action:
+      - service: cover.close_cover
+        data:
+          entity_id: cover.blinds_stop
+
+  - alias: hall_window_blinds_stop_03
+    trigger:
+     - platform: state
+       entity_id: cover.time_based_cover
+       from: 'closing'
+       to: 'open'
+    action:
+      - service: cover.close_cover
+        data:
+          entity_id: cover.blinds_stop

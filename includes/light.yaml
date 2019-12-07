@@ -1,0 +1,27 @@
+  - platform: switch
+    name: hall_chandelier_lights_5
+    entity_id: switch.wall_switch_left_158d00012f7851
+    
+  - platform: switch
+    name: hall_chandelier_lights_3
+    entity_id: switch.wall_switch_right_158d00012f7851
+
+  - platform: switch
+    name: bedroom_chandelier_lights_2
+    entity_id: switch.wall_switch_left_158d00031476c3
+    
+  - platform: switch
+    name: bedroom_chandelier_lights_3
+    entity_id: switch.wall_switch_right_158d00031476c3
+
+  - platform: switch
+    name: mirror_light
+    entity_id: switch.smart_wifi_socket
+    
+  - platform: switch
+    name: corridor_chandelier
+    entity_id: switch.corridor_switch_light
+    
+  - platform: switch
+    name: bathroom_chandelier
+    entity_id: switch.bathroom_switch_light

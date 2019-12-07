@@ -1,0 +1,128 @@
+  # Weather prediction
+  - platform: yr
+  
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+
+  - platform: filesize
+    file_paths:
+      - /config/home-assistant_v2.db
+
+  - platform: command_line
+    name: CPU_Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    # If errors occur, remove degree symbol below
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+
+################################################################################
+  - platform: template
+    sensors:
+        # Статус пылесоса
+      vacuum_status:
+        friendly_name: "Vacuum_Status"
+        value_template: "{{ states.vacuum.roborock.attributes.status }}"
+################################################################################
+
+  - platform: systemmonitor
+    resources:
+    - type: processor_use
+    - type: disk_use_percent
+      arg: /
+    - type: memory_use_percent
+    - type: last_boot
+    - type: disk_free
+      arg: /
+
+  - platform: template
+    sensors:
+      last_boot_custom:
+        friendly_name: "Последняя перезагрузка"
+##        value_template: "{{ now().strftime('%H:%M   %d/%m') }}"
+##        value_template: "{{ as_timestamp (now()) -as_timestamp(states.sensor.last_boot.state) | int }}"
+        value_template: >
+           {% set uptime = as_timestamp (now()) -as_timestamp(states.sensor.last_boot.state) | int %}
+           {% set minutes = (( uptime % 3660) / 60) | int %}
+           {% set hours = ((uptime % 86400) / 3600) | int %}
+           {% set days = (uptime / 86400) | int %}
+             {% if uptime < 1 %}
+               Меньше минуты
+             {% else %}
+               {% if days > 0 %}
+                 {{ days }} д.
+               {% endif %}
+               {% if hours > 0 %}
+                 {% if days > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                 {{ hours }} ч.
+               {% endif %}
+               {% if minutes > 0 %}
+                 {% if days > 0 or hours > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                   {{ minutes }} мин.
+               {% endif %}
+             {% endif %}
+
+################################################################################
+  - platform: template
+    sensors:
+      pressure_mmhg_158d0001fa842b:
+        friendly_name: "Кухня, давление мм рт. ст."
+        unit_of_measurement: 'mmHg'
+        value_template: "{{ (states('sensor.pressure_158d0001fa842b')|float * 0.75006375541921)|round(2) }}"
+        icon_template: mdi:gauge
+
+  - platform: template
+    sensors:
+      pressure_mmhg_158d0001f53215:
+        friendly_name: "Спальня, давление мм рт. ст."
+        unit_of_measurement: 'mmHg'
+        value_template: "{{ (states('sensor.pressure_158d0001f53215')|float * 0.75006375541921)|round(2) }}"
+        icon_template: mdi:gauge
+
+  - platform: template
+    sensors:
+      termostat_temp:
+        friendly_name: "Termostat_temp"
+        unit_of_measurement: '°C'
+        device_class: temperature
+        value_template: "{{ (state_attr('climate.533007262462ab08a7fb','current_temperature'))/2 }}"
+
+  - platform: template
+    sensors:
+      termostat_set:
+        friendly_name: "Termostat_set"
+        unit_of_measurement: '°C'
+        device_class: temperature
+        value_template: "{{ (state_attr('climate.533007262462ab08a7fb','temperature')) }}"
+
+################################################################################
+
+  - platform: template
+    sensors:
+      humidifier_level:
+        friendly_name: "Humidifier level"
+        unit_of_measurement: '%'
+        device_class: humidity
+        value_template: "Уровень воды: {{( ( (state_attr('fan.xiaomi_miio_device','depth'))/125)*100) |round(2) }}"
+
+  - platform: template
+    sensors:
+      humidity_humidifier:
+        friendly_name: "humidity_humidifier"
+        unit_of_measurement: '%'
+        device_class: humidity
+        value_template: "Влажность: {{ (state_attr('fan.xiaomi_miio_device','humidity')) }}"
+
+  - platform: template
+    sensors:
+      temperature_humidifier:
+        friendly_name: "temperature_humidifier"
+        unit_of_measurement: '°C'
+        device_class: temperature
+        value_template: "Температура: {{ (state_attr('fan.xiaomi_miio_device','temperature')) }}"
+

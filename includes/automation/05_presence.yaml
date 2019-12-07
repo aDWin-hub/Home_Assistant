@@ -1,0 +1,161 @@
+################################################################################
+##                           presence_timer                                   ##
+################################################################################
+## Когда регистрируется уход из дома, запускается таймер
+  - alias: presence_gone_start
+    hide_entity: false
+    initial_state: 'true'
+    trigger:
+      platform: state
+      entity_id: binary_sensor.amazfit
+      from: 'on'
+      to: 'off'
+    action:
+     - service: timer.cancel
+       entity_id: timer.presence_timer
+     - service: timer.start
+       entity_id: timer.presence_gone
+
+## Если вернулся домой, то сбрасываем таймер ухода
+## И запускаем таймер присутствия
+  - alias: presence_gone_stop
+    hide_entity: false
+    initial_state: 'true'
+    trigger:
+      platform: state
+      entity_id: binary_sensor.amazfit
+      from: 'off'
+      to: 'on'
+    action:
+     - service: timer.cancel
+       entity_id: timer.presence_gone
+     - service: timer.start
+       entity_id: timer.presence_come
+
+################################################################################
+##                   Управление электропитанием в доме                        ##
+################################################################################
+  - alias: tv_power_socket_off
+    trigger:
+      platform: time
+      at: '08:00'
+    condition:
+    - condition: state
+      entity_id: binary_sensor.amazfit
+      state: 'off'
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    action:
+         ## розетка в зале (телевизор)
+      - service: switch.turn_off
+        entity_id: switch.xiaomi_power_strip
+         ## розетка в спальне
+      - service: switch.turn_off
+        entity_id: switch.plug_158d0002ecea0e
+
+  - alias: tv_power_socket_on
+    hide_entity: false
+    initial_state: 'true'
+    trigger:
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.presence_come
+    condition:
+    - condition: state
+      entity_id: switch.xiaomi_power_strip
+      state: 'off'
+    action:
+         ## розетка в зале (телевизор)
+      - service: switch.turn_on
+        entity_id: switch.xiaomi_power_strip
+
+################################################################################
+##                                  Пылесос                                   ##
+################################################################################
+  - alias: CleanUP
+    hide_entity: false
+    initial_state: 'true'
+    trigger:
+      platform: time
+      at: '13:00'
+    condition:
+    - condition: state
+      entity_id: binary_sensor.amazfit
+      state: 'off'
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    action:
+    - service: vacuum.start
+    - service: notify.ios_adwin
+      data:
+        title: 'Пылесос'
+        message: "{{ states('sensor.time') }} Я приберусь, пока ты на работе! =)"
+        data:
+            push:
+              badge: 0
+
+##Запуск уборки если ушел из дома в выходной день
+  - alias: CleanUP_weekend
+    hide_entity: false
+    initial_state: 'true'
+    trigger:
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.presence_gone
+    condition:
+    - condition: time
+      after: '09:00:00'
+      before: '20:00:00'
+      weekday:
+        - sat
+        - sun
+    action:
+    - service: vacuum.start
+    - service: notify.ios_adwin
+      data:
+        title: 'Пылесос'
+        message: "{{ states('sensor.time') }} Не переживай! Я приберусь! =)"
+        data:
+            push:
+              badge: 0
+
+## Запуск уборки возле шкафа  ##
+  - alias: CleanUP_spot_corridor
+    hide_entity: false
+    initial_state: 'true'
+    trigger:
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.presence_come
+    condition:
+      - condition: time
+        after: '17:00:00'
+        before: '21:30:00'
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+      - condition: state
+        entity_id: script.vacuum_goto_3
+        state: 'off'
+        for:
+          hours: 4
+    action:
+      - service: script.turn_on
+        entity_id: script.vacuum_goto_3
+

@@ -1,0 +1,21 @@
+################################################################################
+##                                 Чайник                                     ##
+################################################################################
+
+  - alias: Kettle_06_30
+    trigger:
+      platform: time
+      at: "06:30:00"
+    condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    action:
+      - service: water_heater.set_operation_mode
+        data:
+          entity_id: water_heater.g200s
+          operation_mode: electric

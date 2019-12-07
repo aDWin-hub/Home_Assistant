@@ -1,0 +1,95 @@
+################################################################################
+##Мгновенное потребление
+  - platform: template
+    sensors:
+      xiaomi_miija_m365:
+        friendly_name: 'm365_Power'
+        value_template: "{{ state_attr('switch.plug_158d00024ef864', 'load_power') }}"
+        icon_template: mdi:power-plug
+        unit_of_measurement: 'Вт'
+        entity_id: switch.plug_158d00024ef864
+
+################################################################################
+#mqtt потребление за вчера
+  - platform: mqtt
+    state_topic: "power/xiaomi_miija_m365/yesterday"
+    name: 'mqtt_power_yesterday_xiaomi_miija_m365'
+    unit_of_measurement: 'кВт⋅ч'
+
+#mqtt потребление за вчера (ночной)
+  - platform: mqtt
+    state_topic: "power/xiaomi_miija_m365/yesterday_night"
+    name: 'mqtt_power_yesterday_night_xiaomi_miija_m365'
+    unit_of_measurement: 'кВт⋅ч'
+
+#mqtt потребление за сегодня
+  - platform: mqtt
+    state_topic: "power/xiaomi_miija_m365/today"
+    name: 'mqtt_power_today_xiaomi_miija_m365'
+    unit_of_measurement: 'кВт⋅ч'
+    
+#mqtt потребление за сегодня (ночной)
+  - platform: mqtt
+    state_topic: "power/xiaomi_miija_m365/today_night"
+    name: 'mqtt_power_today_night_xiaomi_miija_m365'
+    unit_of_measurement: 'кВт⋅ч'
+
+#mqtt потребление за месяц
+  - platform: mqtt
+    state_topic: "power/xiaomi_miija_m365/month"
+    name: 'mqtt_power_month_xiaomi_miija_m365'
+    unit_of_measurement: 'кВт⋅ч'
+
+#mqtt потребление за месяц (ночной)
+  - platform: mqtt
+    state_topic: "power/xiaomi_miija_m365/month_night"
+    name: 'mqtt_power_month_night_xiaomi_miija_m365'
+    unit_of_measurement: 'кВт⋅ч'
+
+#mqtt потребление за прошлый месяц
+  - platform: mqtt
+    state_topic: "power/xiaomi_miija_m365/lastmonth"
+    name: 'mqtt_power_lastmonth_xiaomi_miija_m365'
+    unit_of_measurement: 'кВт⋅ч'
+
+#mqtt потребление за прошлый месяц (ночной)
+  - platform: mqtt
+    state_topic: "power/xiaomi_miija_m365/lastmonth_night"
+    name: 'mqtt_power_lastmonth_night_xiaomi_miija_m365'
+    unit_of_measurement: 'кВт⋅ч'
+
+# Стоимость за месяц
+  - platform: template
+    sensors:
+      money_month_xiaomi_miija_m365:
+        friendly_name: "Стоимость за текущий месяц (дневной)"
+        unit_of_measurement: 'руб'
+        value_template: "{{ (states.sensor.mqtt_power_month_xiaomi_miija_m365.state | float * 3.67)|round(2) }}"
+        icon_template: mdi:square-inc-cash
+        
+# Стоимость за месяц (ночной)
+  - platform: template
+    sensors:
+      money_month_night_xiaomi_miija_m365:
+        friendly_name: "Стоимость за текущий месяц (ночной)"
+        unit_of_measurement: 'руб'
+        value_template: "{{ (states.sensor.mqtt_power_month_night_xiaomi_miija_m365.state | float * 2.13)|round(2) }}"
+        icon_template: mdi:square-inc-cash 
+    
+# Стоимость за прошлый месяц
+  - platform: template
+    sensors:
+      money_lastmonth_xiaomi_miija_m365:
+        friendly_name: "Стоимость за прошлый месяц (дневной)"
+        unit_of_measurement: 'руб'
+        value_template: "{{ (states.sensor.mqtt_power_lastmonth_xiaomi_miija_m365.state | float * 3.67)|round(2) }}"
+        icon_template: mdi:square-inc-cash 
+
+# Стоимость за прошлый месяц (ночной)
+  - platform: template
+    sensors:
+      money_lastmonth_night_xiaomi_miija_m365:
+        friendly_name: "Стоимость за прошлый месяц (ночной)"
+        unit_of_measurement: 'руб'
+        value_template: "{{ (states.sensor.mqtt_power_lastmonth_night_xiaomi_miija_m365.state | float * 2.13)|round(2) }}"
+        icon_template: mdi:square-inc-cash 

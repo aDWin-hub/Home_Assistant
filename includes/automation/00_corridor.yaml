@@ -1,0 +1,383 @@
+################################################################################
+##                        Управление освещением                               ##
+################################################################################
+
+## Автоматическое включение света при открытии двери включение рингтона
+  - alias: corridor_enter_light_OpenDoor
+    initial_state: 'true'
+    trigger:
+     # Открытие входной двери
+     platform: state
+     entity_id: binary_sensor.door_window_sensor_158d000106d134
+     from: 'off'
+     to: 'on'
+    condition:
+     # Лампочка выключена не менее 2ух минут
+    - condition: state
+      entity_id: light.corridor_chandelier
+      state: 'off'
+      for:
+        minutes: 2
+     # Движение нет от 1 минуты
+    - condition: state
+      entity_id: binary_sensor.pir_sensor
+      state: 'off'
+      for:
+        minutes: 1
+    action:
+         # Запускаем звук дверного звонка и включаем свет
+      - service: xiaomi_aqara.play_ringtone
+        data:
+          gw_mac: F0:B4:29:B3:F1:10
+          ringtone_id: 10
+          ringtone_vol: 8
+         # Дополнительное условие, включаем свет только если темно
+      - condition: numeric_state
+        entity_id: sensor.corridor_ambient_light
+        below: 18
+      - service: light.turn_on
+        entity_id:
+          - light.corridor_chandelier
+
+################################################################################
+
+## Таймер освещения вкл и ! выключаем таймер бездействия!
+  - alias: corridor_light_timer_on1
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+     - platform: state
+       entity_id: light.corridor_chandelier
+       to: 'on'
+    action:
+     - service: timer.cancel
+       entity_id: timer.corridor
+     - service: timer.start
+       entity_id: timer.corridor
+    #   data_template: 
+    #      duration: '00:03:00'
+     - service: timer.cancel
+       entity_id: timer.corridor_idle
+
+## Если выключили свет то выключаем таймер
+  - alias: corridor_light_timer_off
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: state
+      entity_id: light.corridor_chandelier
+      to: 'off'
+    action:
+    - service: timer.cancel
+      entity_id: timer.corridor
+
+## Сброс таймера отключения света при регистрации движений
+  - alias: corridor_light_auto_off
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+     - platform: state
+       entity_id: binary_sensor.motion_sensor_158d000257d71d
+       to: 'on'
+     - platform: state
+       entity_id: binary_sensor.motion_sensor_158d00030213a9
+       to: 'on'
+     - platform: state
+       entity_id: binary_sensor.pir_sensor
+       to: 'on'
+    condition:
+     - condition: state
+       entity_id: light.corridor_chandelier
+       state: 'on'
+    action:
+     - service: timer.cancel
+       entity_id: timer.corridor
+     - service: timer.start
+       entity_id: timer.corridor
+    #   data_template: 
+    #      duration: '00:03:00'
+
+## если движение все еще детектируется, сбрасываем таймер
+  - alias: corr_light_auto_off_02
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.corridor
+    condition:
+      condition: or
+      conditions:
+       - condition: state
+         entity_id: binary_sensor.motion_sensor_158d000257d71d
+         state: 'on' 
+       - condition: state
+         entity_id: binary_sensor.motion_sensor_158d00030213a9
+         state: 'on' 
+       - condition: state
+         entity_id: binary_sensor.pir_sensor
+         state: 'on' 
+    action:
+     - service: timer.cancel
+       entity_id: timer.corridor
+     - service: timer.start
+       entity_id: timer.corridor
+    #   data_template: 
+    #      duration: '00:03:00'
+
+## Автоматическое отключение света
+  - alias: corr_light_auto_off_01
+    hide_entity: false
+    initial_state: 'true'
+    trigger:
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.corridor
+    condition:
+     - condition: state
+       entity_id: binary_sensor.motion_sensor_158d000257d71d
+       state: 'off' 
+     - condition: state
+       entity_id: binary_sensor.motion_sensor_158d00030213a9
+       state: 'off' 
+     - condition: state
+       entity_id: binary_sensor.pir_sensor
+       state: 'off'
+    action:
+     # Выключаем свет
+      - service: light.turn_off
+        entity_id:
+          - light.corridor_chandelier
+     # Запускаем таймер бездействия
+      - service: timer.cancel
+        entity_id: timer.corridor_idle
+      - service: timer.start
+        entity_id: timer.corridor_idle
+     # Запускаем таймер проверки (а выключился ли свет?)
+      - service: timer.start
+        entity_id: timer.check_light
+
+## Проверка отключился ли свет 
+  - alias: corr_light_auto_off_check_00
+    hide_entity: false
+    initial_state: 'true'
+    trigger:
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.check_light
+    condition:
+     # Если свет все еще включен
+     - condition: state
+       entity_id: light.corridor_chandelier
+       state: 'on'
+    action:
+     # Отключаем свет
+      - service: light.turn_off
+        entity_id:
+          - light.corridor_chandelier
+     # Перезапускаем таймер проверки
+      - service: timer.start
+        entity_id: timer.check_light
+
+################################################################################
+
+## Автоматическое включение света по таймеру бездействия
+  - alias: corridor_light_auto_on
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+     - platform: state
+       entity_id: binary_sensor.motion_sensor_158d000257d71d
+       to: 'on'
+     - platform: state
+       entity_id: binary_sensor.motion_sensor_158d00030213a9
+       to: 'on'
+     - platform: state
+       entity_id: binary_sensor.pir_sensor
+       to: 'on'
+    condition:
+     # Если свет выключен
+     - condition: state
+       entity_id: light.corridor_chandelier
+       state: 'off'
+     # И если таймер бездействия все еще активен
+     - condition: state
+       entity_id: timer.corridor_idle
+       state: active
+    action:
+     # Включаем свет
+      - service: light.turn_on
+        entity_id:
+          - light.corridor_chandelier
+     # Отключаем таймер проверки
+      - service: timer.cancel
+        entity_id: timer.check_light
+     # Добавляем паузу, для избежания повторного включения света
+      - delay: 0:03
+
+
+################################################################################
+##                          Управление ночником                               ##
+################################################################################
+
+  - alias: turn_on_the_night_light
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_158d000257d71d
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_158d00030213a9
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.pir_sensor
+        to: 'on'
+    condition:
+     - condition: state
+       entity_id: light.corridor_chandelier
+       state: 'off'
+     - condition: or
+       conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+    action:
+     - service: light.turn_on
+       entity_id: light.gateway_light_f0b429b3f110
+       data_template:
+         brightness_pct: 5
+         rgb_color: [243,165,005]
+     - service: timer.cancel
+       entity_id: timer.night_light_t
+     - service: timer.start
+       entity_id: timer.night_light_t
+       data_template: 
+         duration: '00:02:20'
+
+## Таймер ночника выкл
+  - alias: night_light_timer_off
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+    - platform: state
+      entity_id: light.gateway_light_f0b429b3f110
+      to: 'off'
+    action:
+    - service: timer.cancel
+      entity_id: timer.night_light_t
+
+## если движение все еще детектируется, сбрасываем таймер
+  - alias: night_light_auto_off_01
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.night_light_t
+    condition:
+      condition: or
+      conditions:
+       - condition: state
+         entity_id: binary_sensor.motion_sensor_158d000257d71d
+         state: 'on' 
+       - condition: state
+         entity_id: binary_sensor.motion_sensor_158d00030213a9
+         state: 'on' 
+       - condition: state
+         entity_id: binary_sensor.pir_sensor
+         state: 'on' 
+    action:
+     - service: timer.cancel
+       entity_id: timer.night_light_t
+     - service: timer.start
+       entity_id: timer.night_light_t
+       data_template: 
+         duration: '00:02:20'
+
+## Автоматическое отключение ночника
+  - alias: night_light_auto_off_02
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.night_light_t
+    condition:
+       - condition: state
+         entity_id: binary_sensor.motion_sensor_158d000257d71d
+         state: 'off' 
+       - condition: state
+         entity_id: binary_sensor.motion_sensor_158d00030213a9
+         state: 'off' 
+       - condition: state
+         entity_id: binary_sensor.pir_sensor
+         state: 'off' 
+    action:
+      - service: light.turn_off
+        entity_id:
+          - light.gateway_light_f0b429b3f110
+
+################################################################################
+
+## Отключение ночника при включении света
+  - alias: night_light_off_01
+    hide_entity: true
+    initial_state: 'true'
+    trigger:
+     # Если свет включается, то ночник выключается
+     - platform: state
+       entity_id: light.corridor_chandelier
+       from: 'off'
+       to: 'on'
+    condition:
+     - condition: state
+       entity_id: light.gateway_light_f0b429b3f110
+       state: 'on'
+    action:
+      - service: light.turn_off
+        entity_id:
+          - light.gateway_light_f0b429b3f110
+
+## Включение ночника в темное время суток, при отключении света
+  - alias: turn_on_the_night_light_01
+    initial_state: true
+    trigger:
+     - platform: state
+       entity_id: light.corridor_chandelier
+       from: 'on'
+       to: 'off'
+    condition:
+     - condition: or
+       conditions:
+        - condition: state
+          entity_id: binary_sensor.motion_sensor_158d000257d71d
+          state: 'on' 
+        - condition: state
+          entity_id: binary_sensor.motion_sensor_158d00030213a9
+          state: 'on' 
+     - condition: or
+       conditions:
+        - condition: sun
+          after: sunset
+          after_offset: "+02:00:00"
+        - condition: sun
+          before: sunrise
+          before_offset: "-02:30:00"
+    action:
+     - service: light.turn_on
+       entity_id: light.gateway_light_f0b429b3f110
+       data_template:
+         brightness_pct: 25
+         rgb_color: [243,165,005]
+     - service: timer.cancel
+       entity_id: timer.night_light_t
+     - service: timer.start
+       entity_id: timer.night_light_t
+       data_template: 
+         duration: '00:02:20'

@@ -1,0 +1,202 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: DWHome
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret homeassistant_latitude
+  longitude: !secret homeassistant_longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Moscow
+  # Customization file
+  customize: !include customize.yaml
+
+  whitelist_external_dirs:
+    - /config
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+#http:
+#   base_url:
+
+system_health:
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - yeelight
+
+mobile_app:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+
+# Text to speech
+tts:
+  - platform:  google_translate
+
+# Cloud
+cloud:
+
+group: !include groups.yaml
+script: !include scripts.yaml
+automation: !include_dir_merge_list includes/automation
+sensor: !include_dir_merge_list includes/sensors
+light: !include includes/light.yaml
+switch: !include includes/switch.yaml
+homekit: !include includes/HomeKit.yaml
+
+panel_iframe:
+  router:
+    title: 'Router'
+    icon: mdi:wifi
+    url: http://192.168.1.1
+
+water_heater:
+  - platform: R4S_G200S
+    device: 'hci0' # hardware bluetooth device
+    mac: 'dc:bb:de:0c:3e:61'  # your kettle mac
+    key: 'ab64e6f700f75c64' # 8 byte password
+    scan_interval: 90
+
+# device_tracker:
+#   - platform: bluetooth_le_tracker
+#     track_new_devices: true
+
+xiaomi_aqara:
+  discovery_retry: 5
+  gateways:
+    - host: 192.168.1.138
+      mac: F0:B4:29:B3:F1:10
+      key: !secret xiaomi_aqara_key
+
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.1.207
+    name: roborock
+    token: !secret vacuum_token
+    
+remote:
+  - platform: xiaomi_miio
+    host: 192.168.1.16
+    name: irremote
+    token: !secret remote_token
+
+media_player:
+  - platform: samsungtv
+    host: 192.168.1.179
+    port: 8001
+    mac: FC:03:9F:27:FE:6A
+    name: samsung_tv
+
+fan:
+  - platform: xiaomi_miio
+    host: 192.168.1.241
+    token: !secret xiaomi_fan_token
+
+ios:
+  push:
+    categories:
+      - name: vacuumm
+        identifier: vacuumm
+        actions:
+          - identifier: VACUUMON
+            title: 'Запустить уборку'
+            activationMode: 'background'
+            authenticationRequired: false
+            destructive: false
+            behavior: 'default'
+          - identifier: VACUUMSPOT
+            title: 'Уборка спальни'
+            activationMode: 'background'
+            authenticationRequired: false
+            destructive: false
+            behavior: 'default'
+
+timer: 
+  corridor:
+    duration: '00:03:00'
+  corridor_idle:
+    duration: '00:04:00'
+  night_light_t:
+    duration: '00:02:20'
+  check_light:
+    duration: '00:00:04'
+  presence_gone:
+    duration: '00:20:00'
+  presence_come:
+    duration: '00:05:00'
+
+yeelight:
+  devices:
+    192.168.1.140:
+      name: hall_table_lamp
+
+tuya:
+  username: !secret tuya_username
+  password: !secret tuya_password
+  country_code: 7
+
+weather:
+  - platform: openweathermap
+    api_key: !secret weather_api_key
+
+recorder:
+  purge_keep_days: 1
+  exclude:
+    domains:
+      - automation
+      - script
+      - switch
+      - updater
+    entities:
+      - sun.sun
+      - sensor.last_boot 
+      - sensor.date
+      - sensor.time
+      - sensor.home_assistant_v2_db
+      - sensor.last_boot_custom
+      - sensor.yr_symbol
+      - sensor.corridor_ambient_light
+      - sensor.humidifier_level
+      - sensor.humidity_humidifier
+      - sensor.temperature_humidifier
+      - sensor.wled_estimated_current
+      - sensor.wled_free_memory
+      - sensor.wled_uptime
+      - sensor.eh3_uptime
+      - sensor.eh4_uptime
+      - sensor.eh3_wifi_signal
+      - sensor.eh4_wifi_signal
+
+#lovelace:
+#  mode: yaml
