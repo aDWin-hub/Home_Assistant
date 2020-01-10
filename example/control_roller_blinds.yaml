@@ -1,0 +1,114 @@
+# Переменные 
+substitutions:
+ devicename: EH3
+
+esphome:
+  name: esp_home_03
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "1234"
+
+ota:
+  password: "1234"
+
+sensor:
+  - platform: uptime
+    name: ${devicename}_uptime
+    id: uptime_sec
+    internal: true
+
+  - platform: wifi_signal
+    name: ${devicename}_WiFi_Signal"
+    update_interval: 60s
+
+text_sensor:
+  - platform: template
+    name: ${devicename}_uptime
+    lambda: |-
+      int seconds = (id(uptime_sec).state);
+      int days = seconds / (24 * 3600);
+      seconds = seconds % (24 * 3600); 
+      int hours = seconds / 3600;
+      seconds = seconds % 3600;
+      int minutes = seconds /  60;
+      seconds = seconds % 60;
+      return { (String(days) +" д. " + String(hours) +" ч. " + String(minutes) +" мин.").c_str() };
+    icon: mdi:clock
+    update_interval: 113s
+
+
+switch:
+  - platform: gpio
+    pin: D2
+    name: "Blinds Open Switch"
+    id: open_switch
+  - platform: gpio
+    pin: D3
+    name: "Blinds Close Switch"
+    id: close_switch
+cover:
+  - platform: template
+    name: "Window"
+    open_action:
+      # Cancel any previous action
+      - switch.turn_off: close_switch
+      # Turn the OPEN switch on briefly
+      - switch.turn_on: open_switch
+      - delay: 37.0s
+      - switch.turn_off: open_switch
+      - delay: 1.0s
+      - switch.turn_on: close_switch
+      - delay: 0.1s
+      - switch.turn_off: close_switch
+    close_action:
+      - switch.turn_off: open_switch
+      - switch.turn_on: close_switch
+      - delay: 34.0s
+      - switch.turn_off: close_switch
+      - delay: 1.0s
+      - switch.turn_on: open_switch
+      - switch.turn_off: open_switch
+    stop_action:
+      - switch.turn_off: close_switch
+      - switch.turn_off: open_switch
+    optimistic: true
+    assumed_state: true
+
+  - platform: template
+    name: "Blinds_stop"
+    open_action:
+      - delay: 1.0s
+      - switch.turn_on: close_switch
+      - delay: 0.1s
+      - switch.turn_off: close_switch
+    close_action:
+      - delay: 1.0s
+      - switch.turn_on: open_switch
+      - switch.turn_off: open_switch
+    stop_action:
+      - switch.turn_off: close_switch
+      - switch.turn_off: open_switch
+    optimistic: true
+    assumed_state: true
+    
+  - platform: time_based
+    name: "Time-Based_Cover"
+    open_action:
+      - switch.turn_on: open_switch
+    open_duration: 37.3s
+    close_action:
+      - switch.turn_on: close_switch
+    close_duration: 34.0s
+    stop_action:
+      - switch.turn_off: open_switch
+      - switch.turn_off: close_switch
