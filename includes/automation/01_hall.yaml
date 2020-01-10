@@ -195,10 +195,14 @@
 ##Открываем шторы утром в будний день, если они не открыты
   - alias: hall_window_open_00
     trigger:
-      platform: time
-      at: "07:10:00"
+      platform: state
+      entity_id: binary_sensor.door_window_sensor_158d000106d134
+      from: 'off'
+      to: 'on'
     condition:
     - condition: time
+      after: '06:00:00'
+      before: '09:00:00'
       weekday:
         - mon
         - tue
@@ -229,6 +233,11 @@
     #только по выходным дням
     - condition: time
       weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
         - sat
         - sun
     #до захода солнца и после восхода солнца (пока светло) 
@@ -245,9 +254,11 @@
       for:
         hours: 4
     action:
-      service: cover.open_cover
-      data:
-        entity_id: cover.time_based_cover
+      - service: cover.open_cover
+        data:
+          entity_id: cover.time_based_cover
+      - service: switch.turn_on
+        entity_id: switch.plug_158d0002edbae2
 
 ################################################################################
 ## Остановка шторы по датчику и доворачиваем мотор
