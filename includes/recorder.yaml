@@ -1,0 +1,80 @@
+  purge_keep_days: 1
+  include:
+    entities:
+# Системные сенсоры
+       - sensor.cpu_temperature
+       - sensor.processor_use
+       - sensor.memory_use_percent
+       - sensor.disk_use_percent 
+       - sensor.disk_free
+       - sensor.home_assistant_v2_db
+#Энергомониторинг
+       - sensor.xiaomi_power_strip
+       - sensor.xiaomi_miija_m365
+#Климат
+       - sensor.temperature_158d00010d6b34
+       - sensor.humidity_158d00010d6b34
+       - sensor.temperature_158d0001f53215
+       - sensor.humidity_158d0001f53215
+       - sensor.temperature_158d0001fa842b
+       - sensor.humidity_158d0001fa842b
+       - sensor.pressure_mmhg_158d0001fa842b
+       - sensor.pressure_mmhg_158d0001f53215
+       - sensor.termostat_temp
+       - sensor.termostat_set
+       - sensor.xiaomi_hhccjcy01_moisture
+       - sensor.xiaomi_hhccjcy01_soil_conductivity
+#Присутствие
+       - binary_sensor.amazfit
+       - binary_sensor.miband4
+#Чайник
+       - water_heater.redmondkettler
+#Датчик окна
+       - binary_sensor.living_room_window
+       - binary_sensor.door_window_sensor_158d0002f92121
+       - binary_sensor.door_window_sensor_158d000312e3c9
+       - binary_sensor.door_window_sensor_158d000312da93
+#Датчик двери
+       - binary_sensor.0x00158d00031e7639_contact
+       - binary_sensor.door_window_sensor_158d000106d134
+#Датчик движения
+       - binary_sensor.pir_sensor
+       - binary_sensor.motion_sensor_158d000257d71d
+       - binary_sensor.motion_sensor_158d00030213a9
+       - binary_sensor.0x00158d00032be76c_occupancy
+
+#   exclude:
+#     domains:
+#       - automation
+#       - script
+#       - switch
+#       - updater
+#     entities:
+#      ## Системные
+#       - sun.sun
+#       - sensor.last_boot 
+#       - sensor.date
+#       - sensor.time
+#       - sensor.home_assistant_v2_db
+#       - sensor.last_boot_custom
+#       - sensor.yr_symbol
+#     #   - sensor.cpu_temperature
+#       ## Коридор
+#       - sensor.corridor_ambient_light
+#       ## Увлажнитель
+#       - sensor.humidifier_level
+#       - sensor.humidity_humidifier
+#       - sensor.temperature_humidifier
+#       ## Светодиодная лента
+#       - sensor.wled_estimated_current
+#       - sensor.wled_free_memory
+#       - sensor.wled_uptime
+#       ## ESP Home
+#       - sensor.eh3_uptime
+#       - sensor.eh4_uptime
+#       - sensor.eh3_wifi_signal
+#       - sensor.eh4_wifi_signal
+#       - sensor.corridor_amazfit_rssi
+#       - sensor.corridor_miband2_rssi
+#       ## Чайник
+#       - sensor.redmondsensors

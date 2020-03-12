@@ -1,0 +1,15 @@
+# Сенсор рабочих дней
+  - platform: workday
+    country: RU
+
+# Движение в коридоре
+  - platform: template
+    sensors:
+      motion_in_corridor:
+        friendly_name: "Движение в коридоре"
+        device_class: motion
+        value_template: >-
+          {{ is_state('binary_sensor.motion_sensor_158d000257d71d', 'on')  
+             or is_state('binary_sensor.motion_sensor_158d00030213a9', 'on')
+             or is_state('binary_sensor.pir_sensor', 'on')  }}
+

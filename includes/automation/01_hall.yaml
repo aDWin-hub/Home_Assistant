@@ -120,6 +120,8 @@
      condition: []
      action:
      - service: fan.turn_off
+       data:
+         entity_id: fan.xiaomi_miio_device
 
   -  alias: Увлажнитель, окно, включение
      trigger:
@@ -127,9 +129,68 @@
        entity_id: binary_sensor.door_window_sensor_158d0002f92121
        from: 'on'
        to: 'off'
-     condition: []
+     condition:
+      - condition: numeric_state
+        entity_id: sensor.humidity_158d00010d6b34
+        below: 50
      action:
      - service: fan.turn_on
+       data:
+         entity_id: fan.xiaomi_miio_device
+
+  - alias: Увлажнитель, утро, смена скорости
+    trigger:
+      platform: time
+      at: '06:30'
+    condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+    - condition: state
+      entity_id: fan.xiaomi_miio_device
+      state: 'on'
+    action:
+      - service: fan.set_speed
+        data:
+          entity_id: fan.xiaomi_miio_device
+          speed: High
+
+  - alias: Увлажнитель, выключение (телевизор)
+    trigger:
+      platform: state
+      entity_id: switch.samsung_tv_switch
+      from: 'off'
+      to: 'on'
+    condition:
+     - condition: state
+       entity_id: timer.presence_come
+       state: idle
+       for:
+         minutes: 2
+    action:
+      - service: fan.turn_off
+        data:
+          entity_id: fan.xiaomi_miio_device
+
+  - alias: Увлажнитель, вечер, включение и смена скорости (телевизор)
+    trigger:
+      platform: state
+      entity_id: switch.samsung_tv_switch
+      from: 'on'
+      to: 'off'
+    condition:
+      - condition: time
+        after: '21:00:00'
+        before: '06:00:00'
+      - condition: numeric_state
+        entity_id: sensor.humidity_158d00010d6b34
+        below: 50
+    action:
+      - service: fan.turn_on
+        data:
+          entity_id: fan.xiaomi_miio_device
+          speed: Medium
+
 
 ################################################################################
 ##                       Управление шторой в зале                             ##
@@ -152,7 +213,7 @@
        to: 'on'
     condition:
     - condition: state
-      entity_id: binary_sensor.door_window_sensor_158d00031e7639
+      entity_id: binary_sensor.living_room_window
       state: 'off'
     #проверка условия: или солнце село или еще не рассвет
     - condition: or
@@ -176,7 +237,7 @@
        offset: '-00:40:00'
     condition:
     - condition: state
-      entity_id: binary_sensor.door_window_sensor_158d00031e7639
+      entity_id: binary_sensor.living_room_window
       state: 'off'
     - condition: or
       conditions:
@@ -210,7 +271,7 @@
         - thu
         - fri
     - condition: state
-      entity_id: binary_sensor.door_window_sensor_158d00031e7639
+      entity_id: binary_sensor.living_room_window
       state: 'on'
     action:
       service: cover.open_cover
@@ -221,25 +282,13 @@
   - alias: hall_window_open_01
     trigger:
       - platform: state
-        entity_id: binary_sensor.motion_sensor_158d000257d71d
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.motion_sensor_158d00030213a9
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.pir_sensor
+        entity_id: binary_sensor.motion_in_corridor
         to: 'on'
     condition:
     #только по выходным дням
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
-        - sat
-        - sun
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'off'
     #до захода солнца и после восхода солнца (пока светло) 
     #Необходимо выполнение сразу двух условий
     - condition: sun
@@ -249,7 +298,7 @@
       after: sunrise
     #Состояния шторы (закрыта) датчик положения открыт (в течении 4х часов)
     - condition: state
-      entity_id: binary_sensor.door_window_sensor_158d00031e7639
+      entity_id: binary_sensor.living_room_window
       state: 'on'
       for:
         hours: 4
@@ -257,24 +306,8 @@
       - service: cover.open_cover
         data:
           entity_id: cover.time_based_cover
-      - service: switch.turn_on
-        entity_id: switch.plug_158d0002edbae2
 
 ################################################################################
-## Остановка шторы по датчику и доворачиваем мотор
-  - alias: hall_window_blinds_stop
-    trigger:
-     - platform: state
-       entity_id: binary_sensor.door_window_sensor_158d00031e7639
-       from: 'on'
-       to: 'off'
-    action:
-      - service: cover.open_cover
-        data:
-          entity_id: cover.blinds_stop
-      - service: cover.stop_cover
-        data:
-          entity_id: cover.window
 
 ## Доворачивание мотора при остановке в центре (только в time_based_cover)
   - alias: hall_window_blinds_stop_01
@@ -283,10 +316,6 @@
        entity_id: cover.time_based_cover
        from: 'opening'
        to: 'open'
-    condition:
-      - condition: state
-        entity_id: binary_sensor.door_window_sensor_158d00031e7639
-        state: 'on'
     action:
       - service: cover.open_cover
         data:
@@ -298,6 +327,10 @@
        entity_id: cover.time_based_cover
        from: 'closing'
        to: 'closed'
+    condition:
+    - condition: state
+      entity_id: binary_sensor.living_room_window
+      state: 'off'
     action:
       - service: cover.close_cover
         data:
@@ -313,3 +346,28 @@
       - service: cover.close_cover
         data:
           entity_id: cover.blinds_stop
+
+################################################################################
+################################################################################
+
+## Если включили свет, а ТВ удлинитель выключен, включаем удлинитель
+  - alias: hall_on_tv_power_supply
+    trigger:
+     - platform: state
+       entity_id: light.hall_chandelier_lights_3
+       from: 'off'
+       to: 'on'
+     - platform: state
+       entity_id: light.hall_chandelier_lights_5
+       from: 'off'
+       to: 'on'
+    condition:
+    - condition: state
+      entity_id: switch.xiaomi_power_strip
+      state: 'off'
+    action:
+    - service: switch.turn_on
+      data:
+        entity_id: switch.xiaomi_power_strip
+    - service: switch.turn_on
+      entity_id: switch.plug_158d0002edbae2

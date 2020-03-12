@@ -1,0 +1,10 @@
+
+  zigbee_permit_join:
+    name: Добавление устройств
+    initial: off
+    icon: mdi:radio-tower
+
+  vacation_mode:
+    name: Режим отпуска
+    initial: off
+    icon: mdi:fruit-watermelon

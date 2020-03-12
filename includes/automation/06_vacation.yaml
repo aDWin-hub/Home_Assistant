@@ -1,0 +1,61 @@
+################################################################################
+##                      Управление режимом отпуск                             ##
+################################################################################
+
+  - id: enable_vacation_mode
+    alias: Enable vacation mode
+    trigger:
+      platform: state
+      entity_id: input_boolean.vacation_mode
+      to: 'on'
+    action:
+      - entity_id: automation.charging_iphone_off
+        service: automation.turn_off
+      - entity_id: automation.charging_iphone_on
+        service: automation.turn_off
+      - entity_id: automation.kettle_06_30
+        service: automation.turn_off
+      - entity_id: automation.bathroom_thermostat_evening_01
+        service: automation.turn_off
+      - entity_id: automation.bathroom_thermostat_evening_02
+        service: automation.turn_off
+      - entity_id: automation.bathroom_thermostat_holiday_morning_01
+        service: automation.turn_off
+      - entity_id: automation.bathroom_thermostat_holiday_morning_02
+        service: automation.turn_off
+      - entity_id: automation.bathroom_thermostat_morning_01
+        service: automation.turn_off
+      - entity_id: automation.bathroom_thermostat_morning_02
+        service: automation.turn_off
+      - entity_id: climate.533007262462ab08a7fb
+        service: climate.turn_off
+      - entity_id: automation.cleanup
+        service: automation.turn_off
+
+  - id: disable_vacation_mode
+    alias: Disable vacation mode
+    trigger:
+      platform: state
+      entity_id: input_boolean.vacation_mode
+      to: 'off'
+    action:
+      - entity_id: automation.charging_iphone_off
+        service: automation.turn_on
+      - entity_id: automation.charging_iphone_on
+        service: automation.turn_on
+      - entity_id: automation.kettle_06_30
+        service: automation.turn_on
+      - entity_id: automation.bathroom_thermostat_evening_01
+        service: automation.turn_on
+      - entity_id: automation.bathroom_thermostat_evening_02
+        service: automation.turn_on
+      - entity_id: automation.bathroom_thermostat_holiday_morning_01
+        service: automation.turn_on
+      - entity_id: automation.bathroom_thermostat_holiday_morning_02
+        service: automation.turn_on
+      - entity_id: automation.bathroom_thermostat_morning_01
+        service: automation.turn_on
+      - entity_id: automation.bathroom_thermostat_morning_02
+        service: automation.turn_on
+      - entity_id: automation.cleanup
+        service: automation.turn_on

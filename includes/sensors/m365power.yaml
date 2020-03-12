@@ -64,7 +64,7 @@
       money_month_xiaomi_miija_m365:
         friendly_name: "Стоимость за текущий месяц (дневной)"
         unit_of_measurement: 'руб'
-        value_template: "{{ (states.sensor.mqtt_power_month_xiaomi_miija_m365.state | float * 3.67)|round(2) }}"
+        value_template: "{{ (states.sensor.mqtt_power_month_xiaomi_miija_m365.state | float * 3.84)|round(2) }}"
         icon_template: mdi:square-inc-cash
         
 # Стоимость за месяц (ночной)
@@ -73,7 +73,7 @@
       money_month_night_xiaomi_miija_m365:
         friendly_name: "Стоимость за текущий месяц (ночной)"
         unit_of_measurement: 'руб'
-        value_template: "{{ (states.sensor.mqtt_power_month_night_xiaomi_miija_m365.state | float * 2.13)|round(2) }}"
+        value_template: "{{ (states.sensor.mqtt_power_month_night_xiaomi_miija_m365.state | float * 2.22)|round(2) }}"
         icon_template: mdi:square-inc-cash 
     
 # Стоимость за прошлый месяц
@@ -82,7 +82,7 @@
       money_lastmonth_xiaomi_miija_m365:
         friendly_name: "Стоимость за прошлый месяц (дневной)"
         unit_of_measurement: 'руб'
-        value_template: "{{ (states.sensor.mqtt_power_lastmonth_xiaomi_miija_m365.state | float * 3.67)|round(2) }}"
+        value_template: "{{ (states.sensor.mqtt_power_lastmonth_xiaomi_miija_m365.state | float * 3.84)|round(2) }}"
         icon_template: mdi:square-inc-cash 
 
 # Стоимость за прошлый месяц (ночной)
@@ -91,5 +91,5 @@
       money_lastmonth_night_xiaomi_miija_m365:
         friendly_name: "Стоимость за прошлый месяц (ночной)"
         unit_of_measurement: 'руб'
-        value_template: "{{ (states.sensor.mqtt_power_lastmonth_night_xiaomi_miija_m365.state | float * 2.13)|round(2) }}"
+        value_template: "{{ (states.sensor.mqtt_power_lastmonth_night_xiaomi_miija_m365.state | float * 2.22)|round(2) }}"
         icon_template: mdi:square-inc-cash 

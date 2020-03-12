@@ -1,0 +1,12 @@
+- platform: openweathermap
+  api_key: !secret weather_api_key
+  language: ru
+  monitored_conditions:
+    - temperature
+    - humidity
+
+- platform: template
+  sensors:
+    weather_today:
+      friendly_name: "weather today"
+      value_template: "{{states.weather.openweathermap.state}}"

@@ -5,14 +5,14 @@
       at: "22:00:00"
     action:
       - service: switch.turn_on
-        entity_id: switch.plug_158d0002ecea0e
+        entity_id: switch.0x00158d0002ecea0e_switch
 
-  - alias: charging_iphone_off
-    initial_state: 'true'
-    trigger:
-      platform: time
-      at: "07:00:00"
-    action:
-      - service: switch.turn_off
-        entity_id: switch.plug_158d0002ecea0e
+#   - alias: charging_iphone_off
+#     initial_state: 'true'
+#     trigger:
+#       platform: time
+#       at: "07:00:00"
+#     action:
+#       - service: switch.turn_off
+#         entity_id: switch.0x00158d0002ecea0e_switch
 

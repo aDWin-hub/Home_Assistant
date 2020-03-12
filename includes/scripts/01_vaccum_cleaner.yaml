@@ -1,0 +1,122 @@
+start_pil:
+  sequence:
+  - service: vacuum.start
+    entity_id:
+    - vacuum.roborock
+
+stop_pil:
+  sequence:
+  - service: vacuum.stop
+    entity_id:
+    - vacuum.roborock
+
+go_rtb:
+  sequence:
+  - service: vacuum.return_to_base
+    entity_id:
+    - vacuum.roborock
+
+vacuum_service_mode:
+  alias: движение пылесоса вперед
+  sequence:
+  - service: vacuum.xiaomi_remote_control_start
+    entity_id: vacuum.roborock
+  - delay: 00:00:13
+  - service: vacuum.xiaomi_remote_control_move
+    entity_id: vacuum.roborock
+    data:
+      duration: 2000
+      velocity: 0.2
+      rotation: 0
+  - delay: 00:00:02
+  - service: vacuum.xiaomi_remote_control_move
+    entity_id: vacuum.roborock
+    data:
+      duration: 0
+      velocity: 0.2
+      rotation: 40
+  - delay: 00:00:03
+  - service: vacuum.xiaomi_remote_control_move
+    entity_id: vacuum.roborock
+    data:
+      duration: 12000
+      velocity: 0.2
+      rotation: 0
+  - delay: 00:00:13
+  - service: vacuum.xiaomi_remote_control_stop
+
+vacuum_goto_kitchen:
+  alias: Уборка на кухне
+  sequence:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.roborock
+      command: app_goto_target
+      params:
+      - 16000
+      - 22300
+  - delay: 00:01:20
+  - service: vacuum.clean_spot
+    data:
+      entity_id: vacuum.roborock
+  - delay: 00:02:15
+  - service: vacuum.return_to_base
+    data:
+      entity_id: vacuum.roborock
+
+vacuum_goto_hall:
+  alias: Уборка в зале
+  sequence:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.roborock
+      command: app_goto_target
+      params:
+      - 17600
+      - 28800
+  - delay: 00:01:13
+  - service: vacuum.clean_spot
+    data:
+      entity_id: vacuum.roborock
+  - delay: 00:02:40
+  - service: vacuum.return_to_base
+    data:
+      entity_id: vacuum.roborock
+
+vacuum_goto_2:
+  alias: Уборка коврика
+  sequence:
+  - data:
+      command: app_goto_target
+      entity_id: vacuum.roborock
+      params:
+      - 18500
+      - 22300
+    service: vacuum.send_command
+  - delay: 00:01:20
+  - data:
+      entity_id: vacuum.roborock
+    service: vacuum.clean_spot
+  - delay: 00:02:15
+  - data:
+      entity_id: vacuum.roborock
+    service: vacuum.return_to_base
+
+vacuum_goto_3:
+  alias: Уборка коридора
+  sequence:
+  - data:
+      command: app_goto_target
+      entity_id: vacuum.roborock
+      params:
+      - 20000
+      - 23500
+    service: vacuum.send_command
+  - delay: 00:00:55
+  - data:
+      entity_id: vacuum.roborock
+    service: vacuum.clean_spot
+  - delay: 00:02:20
+  - data:
+      entity_id: vacuum.roborock
+    service: vacuum.return_to_base

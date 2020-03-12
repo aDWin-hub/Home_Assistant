@@ -1,0 +1,68 @@
+################################################################################
+#                                Уведомления                                   #
+################################################################################
+  - alias: Push_Notify_OpenDoor
+    initial_state: 'true'
+    trigger:
+    # Открытие входной двери
+     platform: state
+     entity_id: binary_sensor.door_window_sensor_158d000106d134
+     from: 'off'
+     to: 'on'
+    action:
+      service: notify.mobile_app_adwin
+      data:
+        title: "Датчик открытия двери"
+        message: "{{ states('sensor.time') }} Открыта входная дверь!"
+        data:
+          push:
+            badge: 0
+
+################################################################################
+
+  - alias: Push_Notify_roborock_Charging
+    initial_state: 'true'
+    trigger:
+     platform: state
+     entity_id: sensor.Vacuum_Status
+     from: 'Returning home'
+     to: 'Charging'
+    action:    
+    - service: notify.mobile_app_adwin
+      data:
+        title: 'Пылесос'
+        message: "{{ states('sensor.time') }} У пылесоса привал!"
+        data:
+            push:
+              badge: 0
+
+  - alias: Push_Notify_fields_flower
+    initial_state: 'true'
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.xiaomi_hhccjcy01_moisture
+      below: 20
+    action:
+    - service: notify.mobile_app_adwin
+      data:
+        title: 'Цветы'
+        message: "{{ states('sensor.time') }} Полей цветы!"
+        data:
+            push:
+              badge: 0
+              
+###############################################################################
+
+  - alias: push_notify_holodos
+    trigger:
+      platform: state
+      entity_id: switch.plug_158d00024ef864
+      to: 'off'
+    action:
+      service: notify.mobile_app_adwin
+      data:
+        title: "Холодильник"
+        message: "{{ states('sensor.time') }} Холодильник отключен от сети!"
+        data:
+          push:
+            badge: 0

@@ -1,0 +1,24 @@
+  corridor:
+    duration: '00:03:00'
+
+  corridor_idle:
+    duration: '00:04:00'
+
+  night_light_t:
+    duration: '00:02:20'
+
+  check_light:
+    duration: '00:00:04'
+
+  presence_gone:
+    duration: '00:20:00'
+
+  presence_come:
+    duration: '00:06:00'
+
+  bathroom:
+    duration: '00:05:00'
+
+  zigbee_permit_join:
+    name: Time remaining
+    duration: 600

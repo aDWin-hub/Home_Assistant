@@ -1,0 +1,23 @@
+  - alias: weather_notification
+    initial_state: 'true'
+    trigger:
+     # Открытие входной двери
+      platform: state
+      entity_id: binary_sensor.door_window_sensor_158d000106d134
+      from: 'off'
+      to: 'on'
+    condition:
+    - condition: template
+      value_template: "{{ states.weather.openweathermap.state == 'rainy'}}"
+    action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_f0b429b3f110
+      data_template:
+        rgb_color: [0,83,138]
+        brightness_pct: 200
+    - service: timer.cancel
+      entity_id: timer.night_light_t
+    - service: timer.start
+      entity_id: timer.night_light_t
+      data_template: 
+        duration: '00:02:20'

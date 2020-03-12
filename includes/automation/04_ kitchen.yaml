@@ -7,15 +7,73 @@
       platform: time
       at: "06:30:00"
     condition:
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
     action:
       - service: water_heater.set_operation_mode
         data:
           entity_id: water_heater.g200s
           operation_mode: electric
+
+## Управление освещением чайника
+# Включаем подсветку утром в будний день
+  - alias: Kettle_light_on_00
+    trigger:
+      platform: time
+      at: "06:00:00"
+    condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.redmondusebacklight
+
+# Выключаем подсветку дне в будний день каждый день
+  - alias: Kettle_light_off_00
+    trigger:
+      platform: time
+      at: "08:00:00"
+    condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.redmondusebacklight
+
+# Включаем подсветку вечером в будний день
+  - alias: Kettle_light_on_01
+    trigger:
+      platform: time
+      at: "17:00:00"
+    condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.redmondusebacklight
+
+# Включаем подсветку утром в выходной день
+  - alias: Kettle_light_00
+    trigger:
+      platform: time
+      at: "09:00:00"
+    condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.redmondusebacklight
+
+# Выключаем подсветку ночью каждый день
+  - alias: Kettle_light_01
+    trigger:
+      platform: time
+      at: "23:00:00"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.redmondusebacklight

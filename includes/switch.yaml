@@ -10,31 +10,24 @@
     token: !secret switch_miio_power_token
     model: qmi.powerstrip.v1
 
-##  - platform: command_line
-##    switches:
-##      corridor_light123:
-##        command_on: "python /config/custom_components/switch/livolo.py on"
-##        command_off: "python /config/custom_components/switch/livolo.py off"
-##        friendly_name: corridor_lightswitch123
-
   - platform: template
     switches:
       kettle_work:
-        value_template: "{{ is_state ('water_heater.g200s', 'electric') }}"
+        value_template: "{{ is_state ('water_heater.redmondkettler', 'electric') }}"
         turn_on:
           service: water_heater.set_operation_mode
           data:
-            entity_id: water_heater.g200s
+            entity_id: water_heater.redmondkettler
             operation_mode: electric
         turn_off:
           service: water_heater.set_operation_mode
           data:
-            entity_id: water_heater.g200s
+            entity_id: water_heater.redmondkettler
             operation_mode: 'off'
 
       corridor_switch_light:
         friendly_name: corridor_lightSwitch
-        value_template: "{{ states.sensor.corridor_ambient_light.state | float > 45 }}"
+        value_template: "{{ states.sensor.corridor_ambient_light.state | float > 40 }}"
         turn_on:
           service: switch.turn_on
           data:
@@ -68,14 +61,15 @@
           data:
             entity_id: script.tv_on_off
 
-      bathroom_switch_light:
-        friendly_name: bathroom_lightSwitch
-        value_template: "{{ states.sensor.illumination_158d00032be76c.state | float > 20 }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.livolo_2
-        turn_off:
-          service: switch.turn_on
-          data:
-            entity_id: switch.livolo_2
+    #   bathroom_switch_light:
+    #     friendly_name: restroom_lightSwitch
+    #     value_template: "{{ states.sensor.illumination_158d00032be76c.state | float > 20 }}"
+    #     turn_on:
+    #       service: switch.turn_on
+    #       data:
+    #         entity_id: switch.livolo_2
+    #     turn_off:
+    #       service: switch.turn_on
+    #       data:
+    #         entity_id: switch.livolo_2
+

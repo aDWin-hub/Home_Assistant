@@ -68,8 +68,11 @@ binary_sensor.door_window_sensor_158d000312da93:
   device_class: window
 binary_sensor.amazfit:
   device_class: presence
-binary_sensor.miband2:
+binary_sensor.miband4:
   device_class: presence
+  icon: mdi:home
 script.tv_ok_button:
   icon: mdi:pokeball
 light.wled: {}
+
+

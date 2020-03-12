@@ -3,7 +3,6 @@
 ################################################################################
 ## Когда регистрируется уход из дома, запускается таймер
   - alias: presence_gone_start
-    hide_entity: false
     initial_state: 'true'
     trigger:
       platform: state
@@ -19,7 +18,6 @@
 ## Если вернулся домой, то сбрасываем таймер ухода
 ## И запускаем таймер присутствия
   - alias: presence_gone_stop
-    hide_entity: false
     initial_state: 'true'
     trigger:
       platform: state
@@ -35,31 +33,33 @@
 ################################################################################
 ##                   Управление электропитанием в доме                        ##
 ################################################################################
-  - alias: tv_power_socket_off
+  - alias: presence_power_sockets_off
+    initial_state: 'true'
     trigger:
-      platform: time
-      at: '08:00'
+     - platform: event
+       event_type: timer.finished
+       event_data:
+         entity_id: timer.presence_gone
     condition:
     - condition: state
       entity_id: binary_sensor.amazfit
       state: 'off'
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+ #Запускаем автоматизацию в будни
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
     action:
          ## розетка в зале (телевизор)
       - service: switch.turn_off
         entity_id: switch.xiaomi_power_strip
          ## розетка в спальне
       - service: switch.turn_off
-        entity_id: switch.plug_158d0002ecea0e
+        entity_id: switch.0x00158d0002ecea0e_switch
+         ## Розетка в зале (Ноутбук)
+      - service: switch.turn_off
+        entity_id: switch.0x00158d0002edbae2_switch
 
-  - alias: tv_power_socket_on
-    hide_entity: false
+  - alias: presence_power_sockets_on
     initial_state: 'true'
     trigger:
      - platform: event
@@ -67,19 +67,24 @@
        event_data:
          entity_id: timer.presence_come
     condition:
-    - condition: state
-      entity_id: switch.xiaomi_power_strip
-      state: 'off'
+      - condition: time
+        after: '07:00:00'
+        before: '23:50:00'
     action:
          ## розетка в зале (телевизор)
       - service: switch.turn_on
         entity_id: switch.xiaomi_power_strip
+         ## Розетка в зале (Ноутбук)
+      - service: switch.turn_on
+        entity_id: switch.0x00158d0002edbae2_switch
+         ## розетка в спальне
+      - service: switch.turn_on
+        entity_id: switch.0x00158d0002ecea0e_switch
 
 ################################################################################
 ##                                  Пылесос                                   ##
 ################################################################################
   - alias: CleanUP
-    hide_entity: false
     initial_state: 'true'
     trigger:
       platform: time
@@ -88,16 +93,15 @@
     - condition: state
       entity_id: binary_sensor.amazfit
       state: 'off'
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+ #Запускаем автоматизацию в будни
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
     action:
     - service: vacuum.start
-    - service: notify.ios_adwin
+      data:
+        entity_id: vacuum.roborock
+    - service: notify.mobile_app_adwin
       data:
         title: 'Пылесос'
         message: "{{ states('sensor.time') }} Я приберусь, пока ты на работе! =)"
@@ -107,7 +111,6 @@
 
 ##Запуск уборки если ушел из дома в выходной день
   - alias: CleanUP_weekend
-    hide_entity: false
     initial_state: 'true'
     trigger:
      - platform: event
@@ -123,7 +126,9 @@
         - sun
     action:
     - service: vacuum.start
-    - service: notify.ios_adwin
+      data:
+        entity_id: vacuum.roborock
+    - service: notify.mobile_app_adwin
       data:
         title: 'Пылесос'
         message: "{{ states('sensor.time') }} Не переживай! Я приберусь! =)"
@@ -133,7 +138,6 @@
 
 ## Запуск уборки возле шкафа  ##
   - alias: CleanUP_spot_corridor
-    hide_entity: false
     initial_state: 'true'
     trigger:
      - platform: event
@@ -142,14 +146,14 @@
          entity_id: timer.presence_come
     condition:
       - condition: time
-        after: '17:00:00'
-        before: '21:30:00'
-        weekday:
-          - mon
-          - tue
-          - wed
-          - thu
-          - fri
+        after: '11:00:00'
+        before: '22:30:00'
+        # weekday:
+        #   - mon
+        #   - tue
+        #   - wed
+        #   - thu
+        #   - fri
       - condition: state
         entity_id: script.vacuum_goto_3
         state: 'off'

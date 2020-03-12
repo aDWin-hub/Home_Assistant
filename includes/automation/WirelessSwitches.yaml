@@ -1,84 +1,182 @@
 ################################################################################
+##                         Основной выключатель/ ЗАЛ                          ##
+################################################################################
+
+  - alias: hall_switch_LeftBtn_01
+    initial_state: 'true'
+    trigger:
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d00012f7851'
+    condition:
+      - condition: template
+        value_template: "{{ 'left' == trigger.payload_json.click }}" 
+    action:
+      service: switch.toggle
+      entity_id: switch.0x00158d00012f7851_switch_left
+
+  - alias: hall_switch_RightBtn_01
+    initial_state: 'true'
+    trigger:
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d00012f7851'
+    condition:
+      - condition: template
+        value_template: "{{ 'right' == trigger.payload_json.click }}" 
+    action:
+      service: switch.toggle
+      entity_id: switch.0x00158d00012f7851_switch_right
+
+  - alias: hall_switch_BothBtn_01
+    initial_state: 'true'
+    trigger:
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d00012f7851'
+    condition:
+      - condition: template
+        value_template: "{{ 'both' == trigger.payload_json.click }}"
+      - condition: state
+        entity_id: switch.samsung_tv_switch
+        state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.samsung_tv_switch
+      - service: switch.turn_off
+        entity_id: switch.0x00158d00012f7851_switch_left
+      - service: switch.turn_off
+        entity_id: switch.0x00158d00012f7851_switch_right
+
+  - alias: hall_switch_BothBtn_02
+    initial_state: 'true'
+    trigger:
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d00012f7851'
+    condition:
+      - condition: template
+        value_template: "{{ 'both' == trigger.payload_json.click }}"
+      - condition: state
+        entity_id: switch.samsung_tv_switch
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.samsung_tv_switch
+         ## Розетка в зале (Ноутбук)
+      - service: switch.turn_off
+        entity_id: switch.0x00158d0002edbae2_switch
+
+
+################################################################################
 #                                   Зал/Гостинная                              #
 ################################################################################
 
 #Управление светом с радиовыключателей в ЗАЛЕ
 #Управление светом с левого радиовыключателя
-  - alias: left_handhold_switch_LeftBtn
-    hide_entity: true
+  - alias: hall_lh_switch_LeftBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_left_158d000255ef47
-        click_type: single
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000214e287'
+    condition:
+      - condition: template
+        value_template: "{{ 'left' == trigger.payload_json.click }}" 
     action:
       service: light.toggle
       entity_id: light.hall_chandelier_lights_5
 
-  - alias: left_handhold_switch_RightBtn
-    hide_entity: true
+  - alias: hall_lh_switch_RightBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_right_158d000255ef47
-        click_type: single
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000214e287'
+    condition:
+      - condition: template
+        value_template: "{{ 'right' == trigger.payload_json.click }}" 
     action:
       service: light.toggle
       entity_id: light.hall_chandelier_lights_3
       
-  - alias: left_handhold_switch_BothBtn
-    hide_entity: true
+  - alias: hall_lh_switch_BothBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_both_158d000255ef47
-        click_type: both
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000214e287'
+    condition:
+      - condition: template
+        value_template: "{{ 'both' == trigger.payload_json.click }}" 
     action:
       service: switch.toggle
       entity_id: switch.hall_switch_tvstand
 
 #Управление светом с правого радиовыключателя
-  - alias: right_handhold_switch_LeftBtn
-    hide_entity: true
+  - alias: hall_rh_switch_LeftBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_left_158d000214e287
-        click_type: single
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000255ef47'
+    condition:
+      - condition: template
+        value_template: "{{ 'left' == trigger.payload_json.click }}" 
     action:
       service: light.toggle
       entity_id: light.hall_chandelier_lights_5
 
-  - alias: right_handhold_switch_RightBtn
-    hide_entity: true
+  - alias: hall_rh_switch_RightBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_right_158d000214e287
-        click_type: single
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000255ef47'
+    condition:
+      - condition: template
+        value_template: "{{ 'right' == trigger.payload_json.click }}" 
     action:
       service: light.toggle
       entity_id: light.hall_chandelier_lights_3
 
-  - alias: right_handhold_switch_BothBtn
-    hide_entity: true
+  - alias: hall_rh_switch_BothBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_both_158d000214e287
-        click_type: both
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000255ef47'
+    condition:
+      - condition: template
+        value_template: "{{ 'both' == trigger.payload_json.click }}" 
+    action:
+      service: switch.toggle
+      entity_id: switch.hall_switch_tvstand
+
+## Выключатель на столе
+##
+  - alias: hall_table_switch_LeftBtn
+    initial_state: 'true'
+    trigger:
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d0001e076b8'
+    condition:
+      - condition: template
+        value_template: "{{ 'left' == trigger.payload_json.click }}" 
+    action:
+      service: light.toggle
+      entity_id: light.hall_chandelier_lights_5
+
+  - alias: hall_table_switch_RightBtn
+    initial_state: 'true'
+    trigger:
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d0001e076b8'
+    condition:
+      - condition: template
+        value_template: "{{ 'right' == trigger.payload_json.click }}" 
+    action:
+      service: light.toggle
+      entity_id: light.hall_chandelier_lights_3
+      
+  - alias: hall_table_switch_BothBtn
+    initial_state: 'true'
+    trigger:
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d0001e076b8'
+    condition:
+      - condition: template
+        value_template: "{{ 'both' == trigger.payload_json.click }}" 
     action:
       service: switch.toggle
       entity_id: switch.hall_switch_tvstand
@@ -89,41 +187,40 @@
 
 #Управление светом с радиовыключателей в СПАЛЬНЕ
 #Управление светом с левого радиовыключателя
-  - alias: left_bed_switch_LeftBtn
-    hide_entity: true
+
+  - alias: bedroom_lb_switch_LeftBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_left_158d000214e38b
-        click_type: single
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000214e38b'
+    condition:
+      - condition: template
+        value_template: "{{ 'left' == trigger.payload_json.click }}" 
     action:
       service: light.toggle
       entity_id: light.bedroom_chandelier_lights_2
-      
-  - alias: left_bed_switch_RightBtn
-    hide_entity: true
+
+  - alias: bedroom_lb_switch_RightBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_right_158d000214e38b
-        click_type: single
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000214e38b'
+    condition:
+      - condition: template
+        value_template: "{{ 'right' == trigger.payload_json.click }}" 
     action:
       service: light.toggle
       entity_id: light.bedroom_chandelier_lights_3
       
-  - alias: left_bed_switch_BothBtn
-    hide_entity: true
+  - alias: bedroom_lb_switch_BothBtn
     initial_state: 'true'
     trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.wall_switch_both_158d000214e38b
-        click_type: both
+      platform: mqtt
+      topic: 'zigbee2mqtt/0x00158d000214e38b'
+    condition:
+      - condition: template
+        value_template: "{{ 'both' == trigger.payload_json.click }}" 
     action:
       service: light.toggle
       entity_id: light.mirror_light
+

@@ -1,10 +1,12 @@
   - platform: switch
     name: hall_chandelier_lights_5
-    entity_id: switch.wall_switch_left_158d00012f7851
+    entity_id: switch.0x00158d00012f7851_switch_left
+    # entity_id: switch.wall_switch_left_158d00012f7851
     
   - platform: switch
     name: hall_chandelier_lights_3
-    entity_id: switch.wall_switch_right_158d00012f7851
+    entity_id: switch.0x00158d00012f7851_switch_right
+    # entity_id: switch.wall_switch_right_158d00012f7851
 
   - platform: switch
     name: bedroom_chandelier_lights_2
@@ -24,4 +26,5 @@
     
   - platform: switch
     name: bathroom_chandelier
-    entity_id: switch.bathroom_switch_light
+    entity_id: switch.0x00124b0018034873_switch_left
+

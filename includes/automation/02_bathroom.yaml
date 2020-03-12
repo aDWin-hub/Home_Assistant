@@ -2,101 +2,225 @@
 ##                      Управление освещением                                 ##
 ################################################################################
 
-## Автоматическое включение света
-  - alias: bathroom_enter_light
+## Автоматическое включение света по движению и открытию двери и запускаем таймер освещения
+  - alias: bathroom_light_enter
+    initial_state: 'true'
     trigger:
-     platform: state
-     entity_id: binary_sensor.motion_sensor_158d00032be76c
-#     from: 'off'
-     to: 'on'
+     - platform: state
+       entity_id: binary_sensor.0x00158d00032be76c_occupancy
+       from: 'off'
+       to: 'on'
     condition:
-    - condition: numeric_state
-      entity_id: sensor.illumination_158d00032be76c
-      below: 20
+    - condition: state
+      entity_id: light.bathroom_chandelier
+      state: 'off'
     action:
-      - service: light.turn_on
-        entity_id:
-          - light.bathroom_chandelier
+    ## Включаем свет
+    - service: light.turn_on
+      entity_id:
+      - light.bathroom_chandelier
+    ## Запускаем таймер на 5 минут в любом случае
+    - service: timer.cancel
+      entity_id: timer.bathroom
+    - service: timer.start
+      entity_id: timer.bathroom
+      data_template: 
+        duration: '00:05:00'
+    ## Но если дверь закрыта, то перезапускаем таймер на 1 час
+    - condition: state
+      entity_id: binary_sensor.0x00158d00031e7639_contact
+      state: 'off'
+    - service: timer.cancel
+      entity_id: timer.bathroom
+    - service: timer.start
+      entity_id: timer.bathroom
+      data_template: 
+        duration: '01:00:00'
+
+  - alias: bathroom_light_timer_on_01
+    initial_state: 'true'
+    trigger:
+    - platform: state
+      entity_id: light.bathroom_chandelier
+    #   from: 'off'
+      to: 'on'
+    action:
+    - service: timer.cancel
+      entity_id: timer.bathroom
+    - service: timer.start
+      entity_id: timer.bathroom
+
+## Если свет включен, а дверь открылась, то перезапускаем таймер на 5 минут
+  - alias: bathroom_light_timer_on_02
+    initial_state: 'true'
+    trigger:
+    - platform: state
+      entity_id: binary_sensor.0x00158d00031e7639_contact
+      from: 'off'
+      to: 'on'
+    condition:
+    - condition: state
+      entity_id: light.bathroom_chandelier
+      state: 'on'
+    action:
+    - service: timer.cancel
+      entity_id: timer.bathroom
+    - service: timer.start
+      entity_id: timer.bathroom
+      data_template: 
+        duration: '00:05:00'
+
+############ Таймер освещения выкл или переведен на 1 час ###############
+  - alias: bathroom_light_timer_off
+    initial_state: 'true'
+    trigger:
+    - platform: state
+      entity_id: binary_sensor.0x00158d00031e7639_contact
+      from: 'on'
+      to: 'off'
+    condition:
+    - condition: state
+      entity_id: light.bathroom_chandelier
+      state: 'on'
+    action:
+    - service: timer.cancel
+      entity_id: timer.bathroom
+    - condition: state
+      entity_id: binary_sensor.0x00158d00031e7639_contact
+      state: 'off'
+    - service: timer.start
+      entity_id: timer.bathroom
+      data_template: 
+        duration: '01:00:00'
+        
+  - alias: bathroom_light_timer_off_00
+    initial_state: 'true'
+    trigger:
+    - platform: state
+      entity_id: light.bathroom_chandelier
+      from: 'on'
+      to: 'off'
+    action:
+    - service: timer.cancel
+      entity_id: timer.bathroom
+
+## Сброс таймера отключения света при регистрации движений
+  - alias: bathroom_light_auto_off
+    initial_state: 'true'
+    trigger:
+    - platform: state
+      entity_id: binary_sensor.0x00158d00032be76c_occupancy
+      from: 'off'
+      to: 'on'
+    condition:
+    - condition: state
+      entity_id: light.bathroom_chandelier
+      state: 'on'
+    action:
+    - service: timer.cancel
+      entity_id: timer.bathroom
+    - service: timer.start
+      entity_id: timer.bathroom
+
+## если движение все еще детектируется, сбрасываем таймер
+  - alias: bathroom_light_auto_off_02
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.bathroom
+    condition:
+    - condition: state
+      entity_id: binary_sensor.0x00158d00032be76c_occupancy
+      state: 'on'
+    action:
+    - service: timer.cancel
+      entity_id: timer.bathroom
+    - service: timer.start
+      entity_id: timer.bathroom
+
+## Автоматическое отключение света
+  - alias: bathroom_light_auto_off_01
+    initial_state: 'true'
+    trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.bathroom
+    condition:
+    - condition: state
+      entity_id: binary_sensor.0x00158d00032be76c_occupancy
+      state: 'off' 
+    action:
+     # Выключаем свет
+    - service: light.turn_off
+      entity_id:
+        - light.bathroom_chandelier
 
 ################################################################################
 ##                      Управление теплым полом                               ##
 ################################################################################
 
-#Установка температуры теплого пола (УТРО)
+#Установка температуры теплого пола (УТРО) будни
   - alias: bathroom_thermostat_morning_01
     trigger:
       platform: time
-      at: "04:30:00"
+      at: "04:00:00"
     condition:
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
     action:
-      - service: climate.set_temperature
-        data:
-          entity_id: climate.533007262462ab08a7fb
-          temperature: 32
+     - service: climate.set_temperature
+       data:
+         entity_id: climate.533007262462ab08a7fb
+         temperature: 33
 
-#Установка температуры теплого пола (УТРО)
+#Установка температуры теплого пола (УТРО) будни
   - alias: bathroom_thermostat_morning_02
     trigger:
       platform: time
-      at: "07:10:00"
+      at: "07:00:00"
     condition:
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
     action:
-      - service: climate.set_temperature
-        data:
-          entity_id: climate.533007262462ab08a7fb
-          temperature: 27
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.533007262462ab08a7fb
+        temperature: 27
 
-#Установка температуры теплого пола (Вечер)
+#Установка температуры теплого пола (Вечер) будни
   - alias: bathroom_thermostat_evening_01
     trigger:
       platform: time
       at: "15:30:00"
     condition:
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
     action:
-      - service: climate.set_temperature
-        data:
-          entity_id: climate.533007262462ab08a7fb
-          temperature: 32
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.533007262462ab08a7fb
+        temperature: 31
 
-#Установка температуры теплого пола (Вечер)
+#Установка температуры теплого пола (Вечер) будни
   - alias: bathroom_thermostat_evening_02
     trigger:
       platform: time
-      at: "23:00:00"
+      at: "22:00:00"
     condition:
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
     action:
-      - service: climate.set_temperature
-        data:
-          entity_id: climate.533007262462ab08a7fb
-          temperature: 27
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.533007262462ab08a7fb
+        temperature: 29
 
 ################################################################################
 
@@ -106,10 +230,9 @@
       platform: time
       at: "05:30:00"
     condition:
-    - condition: time
-      weekday:
-        - sat
-        - sun
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'off'
     action:
       - service: climate.set_temperature
         data:
@@ -122,12 +245,11 @@
       platform: time
       at: "09:30:00"
     condition:
-    - condition: time
-      weekday:
-        - sat
-        - sun
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'off'
     action:
-      - service: climate.set_temperature
-        data:
-          entity_id: climate.533007262462ab08a7fb
-          temperature: 27
+     - service: climate.set_temperature
+       data:
+         entity_id: climate.533007262462ab08a7fb
+         temperature: 30

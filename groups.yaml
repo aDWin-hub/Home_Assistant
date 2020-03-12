@@ -1,6 +1,6 @@
   zal:
     name: Зал
-    control: hidden
+    # control: hidden
     entities:
        - sensor.humidity_158d00010d6b34
        - sensor.temperature_158d00010d6b34
@@ -9,7 +9,7 @@
        
   bedroom:
     name: Спальня
-    control: hidden
+    # control: hidden
     entities:
        - sensor.humidity_158d0001f53215
        - sensor.temperature_158d0001f53215
@@ -18,7 +18,7 @@
        
   kitchen:
     name: Кухня
-    control: hidden
+    # control: hidden
     entities:
        - sensor.humidity_158d0001fa842b
        - sensor.temperature_158d0001fa842b
@@ -28,7 +28,7 @@
        
   corridor:
     name: Коридор
-    control: hidden
+    # control: hidden
     entities:
       - sensor.corridor_temperature
       - sensor.corridor_humidity
@@ -45,7 +45,7 @@
 
   system_information:
     name: Система
-    control: hidden
+    # control: hidden
     entities:
        - sensor.time
        - sensor.date
@@ -59,7 +59,7 @@
 
   power_m365_monitor:
     name: m365
-    control: hidden
+    # control: hidden
     entities:
        - sensor.xiaomi_miija_m365
        - sensor.mqtt_power_today_xiaomi_miija_m365
@@ -77,7 +77,7 @@
 
   power_TVzal_monitor:
     name: TVzal
-    control: hidden
+    # control: hidden
     entities:
        - sensor.xiaomi_power_strip
        - sensor.mqtt_power_today_xiaomi_power_strip
@@ -95,7 +95,7 @@
 
   Batt_monitor:
     name: Batt
-    control: hidden
+    # control: hidden
     entities:
       - sensor.entrance_motion_sensor_158d000257d71d_battery
       - sensor.entrance_motion_sensor_158d00030213a9_battery
@@ -110,3 +110,26 @@
       - sensor.zal_switch_158d000255ef47_battery
       - sensor.zal_switch_158d000214e287_battery
       - sensor.bedroom_switch_158d000214e38b_battery
+
+  wled_group:
+    name: wled
+    # control: hidden
+    entities:
+      - light.wled
+      - sensor.wled_estimated_current
+      - sensor.wled_free_memory
+      - sensor.wled_uptime
+      - switch.wled_nightlight
+      - switch.wled_sync_receive
+      - switch.wled_sync_send
+      
+  eh_group:
+    name: eh_04
+    # control: hidden
+    entities:
+      - sensor.eh4_uptime
+      - sensor.eh4_wifi_signal
+      - sensor.xiaomi_hhccjcy01_illuminance
+      - sensor.xiaomi_hhccjcy01_moisture
+      - sensor.xiaomi_hhccjcy01_soil_conductivity
+      - sensor.xiaomi_hhccjcy01_temperature

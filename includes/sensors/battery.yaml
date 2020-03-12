@@ -18,14 +18,14 @@
         entity_id: binary_sensor.motion_sensor_158d00030213a9
         device_class: battery
 
-  - platform: template
-    sensors:
-     bedroom_motion_sensor_158d00032be76c_battery:
-        friendly_name: 'Ванна, датчик движения'
-        value_template: "{{ state_attr('binary_sensor.motion_sensor_158d00032be76c', 'battery_level') }}"
-        unit_of_measurement: '%'
-        entity_id: binary_sensor.motion_sensor_158d00032be76c
-        device_class: battery
+#   - platform: template
+#     sensors:
+#      bedroom_motion_sensor_158d00032be76c_battery:
+#         friendly_name: 'Ванна, датчик движения'
+#         value_template: "{{ state_attr('binary_sensor.motion_sensor_158d00032be76c', 'battery_level') }}"
+#         unit_of_measurement: '%'
+#         entity_id: binary_sensor.motion_sensor_158d00032be76c
+#         device_class: battery
 
 # Датчики открытия
 
@@ -96,29 +96,29 @@
 
 # ВЫключатели
 
-  - platform: template
-    sensors:
-     zal_switch_158d000255ef47_battery:
-        friendly_name: 'Гостиная, диван, левый выключатель'
-        value_template: "{{ state_attr('binary_sensor.wall_switch_both_158d000255ef47', 'battery_level') }}"
-        unit_of_measurement: '%'
-        entity_id: binary_sensor.wall_switch_both_158d000255ef47
-        device_class: battery
+#   - platform: template
+#     sensors:
+#      zal_switch_158d000255ef47_battery:
+#         friendly_name: 'Гостиная, диван, левый выключатель'
+#         value_template: "{{ state_attr('binary_sensor.wall_switch_both_158d000255ef47', 'battery_level') }}"
+#         unit_of_measurement: '%'
+#         entity_id: binary_sensor.wall_switch_both_158d000255ef47
+#         device_class: battery
 
-  - platform: template
-    sensors:
-     zal_switch_158d000214e287_battery:
-        friendly_name: 'Гостиная, диван, правый выключатель'
-        value_template: "{{ state_attr('binary_sensor.wall_switch_both_158d000214e287', 'battery_level') }}"
-        unit_of_measurement: '%'
-        entity_id: binary_sensor.wall_switch_both_158d000214e287
-        device_class: battery
+#   - platform: template
+#     sensors:
+#      zal_switch_158d000214e287_battery:
+#         friendly_name: 'Гостиная, диван, правый выключатель'
+#         value_template: "{{ state_attr('binary_sensor.wall_switch_both_158d000214e287', 'battery_level') }}"
+#         unit_of_measurement: '%'
+#         entity_id: binary_sensor.wall_switch_both_158d000214e287
+#         device_class: battery
 
-  - platform: template
-    sensors:
-     bedroom_switch_158d000214e38b_battery:
-        friendly_name: 'Спальня, левый выключатель'
-        value_template: "{{ state_attr('binary_sensor.wall_switch_both_158d000214e38b', 'battery_level') }}"
-        unit_of_measurement: '%'
-        entity_id: binary_sensor.wall_switch_both_158d000214e38b
-        device_class: battery
+#   - platform: template
+#     sensors:
+#      bedroom_switch_158d000214e38b_battery:
+#         friendly_name: 'Спальня, левый выключатель'
+#         value_template: "{{ state_attr('binary_sensor.wall_switch_both_158d000214e38b', 'battery_level') }}"
+#         unit_of_measurement: '%'
+#         entity_id: binary_sensor.wall_switch_both_158d000214e38b
+#         device_class: battery

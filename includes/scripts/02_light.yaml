@@ -1,0 +1,29 @@
+tv_stand_rainbow:
+  sequence:
+  - service: light.turn_on
+    entity_id: light.wled
+    data:
+      effect: Rainbow
+      brightness: 135
+
+tv_stand_multi_comet:
+  sequence:
+  - service: light.turn_on
+    entity_id: light.wled
+    data:
+      effect: Multi Comet
+
+tv_stand_fireworks:
+  sequence:
+  - service: light.turn_on
+    entity_id: light.wled
+    data:
+      effect: Fireworks
+
+tv_stand_random_twinkle:
+  sequence:
+  - service: light.turn_on
+    entity_id: light.wled
+    data:
+      effect: Ripple
+

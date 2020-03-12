@@ -1,44 +1,48 @@
   filter:
     include_domains:
-      - alarm_control_panel
-      - light
-      - media_player
-      - sensor
-      - binary_sensor
-      - switch
       - climate
       - fan
-    exclude_entities:
-      - binary_sensor.wall_switch_both_158d000214e287
-      - binary_sensor.wall_switch_left_158d000214e287
-      - binary_sensor.wall_switch_right_158d000214e287
-      - binary_sensor.wall_switch_both_158d000214e38b
-      - binary_sensor.wall_switch_left_158d000214e38b
-      - binary_sensor.wall_switch_right_158d000214e38b
-      - binary_sensor.wall_switch_both_158d000255ef47
-      - binary_sensor.wall_switch_left_158d000255ef47
-      - binary_sensor.wall_switch_right_158d000255ef47
-      - switch.wall_switch_left_158d00012f7851
-      - switch.wall_switch_right_158d00012f7851
-      - switch.wall_switch_left_158d00031476c3
-      - switch.wall_switch_right_158d00031476c3
-      - switch.corridor_lightSwitch
-      - switch.corridor_switch_light
-      - switch.livolo_2_2
-      - sensor.CPU_Temperature
-      - light.bathroom_chandelier
+    # exclude_entities:
+
     include_entities:
+      ## Скрипты
       - script.start_pil
       - script.stop_pil
       - script.go_rtb
       - script.vacuum_goto_kitchen
       - script.vacuum_goto_hall
+      - script.vacuum_goto_3
       - script.music_mode
+      ## Автоматизации
       - automation.corr_light_auto_off_01
+      ## Шторы
       - cover.time_based_cover
+      ## Выключатели
+      - switch.kettle_work
+      - switch.xiaomi_power_strip
+      - switch.plug_158d0002ecea0e
+      - switch.samsung_tv_switch
+      ## Освещение
+      - light.hall_chandelier_lights_5
+      - light.hall_chandelier_lights_3
+      - light.bedroom_chandelier_lights_2
+      - light.bedroom_chandelier_lights_3
+      - light.mirror_light
+      - light.corridor_chandelier
+      - light.gateway_light_f0b429b3f110
+      - light.hall_table_lamp
+      - light.bathroom_chandelier
+      - light.wled
+      - light.hall_table_lamp
+      ## Датчики
+      - sensor.humidity_158d00010d6b34
+      - sensor.temperature_158d00010d6b34
+      - sensor.humidity_158d0001f53215
+      - sensor.temperature_158d0001f53215
+      - sensor.humidity_158d0001fa842b
+      - sensor.temperature_158d0001fa842b
+      - binary_sensor.motion_in_corridor
   entity_config:
-    alarm_control_panel.home:
-      code: 1234
     light.hall_table_lamp:
       name: Настольный светильник
     light.hall_chandelier_lights_5:
@@ -53,8 +57,6 @@
       name: Освещение (коридор)
 
     switch.xiaomi_power_strip:
-      type: outlet
-    switch.smart_wifi_socket:
       type: outlet
     switch.plug_158d00024ef864:
       type: outlet
@@ -73,7 +75,3 @@
       name: Влажность Кухня
     sensor.temperature_158d0001fa842b:
       name: Температура Кухня
-    binary_sensor.motion_sensor_158d000257d71d:
-      name: Датчик движения (коридор)
-    sensor.illumination_158d000257d71d:
-      name: Освещенность (коридор)

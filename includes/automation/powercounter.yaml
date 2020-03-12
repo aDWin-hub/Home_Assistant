@@ -3,7 +3,6 @@
 ################################################################################
 
   - alias: 00_power_conter
-    hide_entity: true
     initial_state: true
     trigger:
       - platform: time_pattern
@@ -45,7 +44,6 @@
 #############################################################################################
 
   - alias: 00_power_conter_night
-    hide_entity: true
     initial_state: true
     trigger:
       - platform: time_pattern
@@ -87,7 +85,6 @@
 ###############################################################################################
 
   - alias: 00_power_new_day  # Начало дня
-    hide_entity: true
     initial_state: true
     trigger:
       - platform: time
@@ -126,7 +123,6 @@
 ##################################################################################################
 
   - alias: 00_power_new_day_night  # Начало дня (ночной)
-    hide_entity: true
     initial_state: true
     trigger:
       - platform: time
@@ -166,7 +162,6 @@
 
      # Начало месяца
   - alias: 00_power_new_month
-    hide_entity: true
     initial_state: true
     trigger:
       - platform: time
@@ -209,7 +204,6 @@
 
      # Начало месяца (Ночной)
   - alias: 00_power_new_month_night
-    hide_entity: true
     initial_state: true
     trigger:
       - platform: time
