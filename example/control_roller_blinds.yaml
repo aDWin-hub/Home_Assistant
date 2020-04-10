@@ -56,6 +56,23 @@ switch:
     pin: D3
     name: "Blinds Close Switch"
     id: close_switch
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: D5
+    name: "Living Room Window"
+    device_class: window
+    id: blinds_close_end
+    on_press:
+      then:
+        - delay: 0.7s
+        - switch.turn_off: close_switch
+        ## Запускаем доворот по закрытию
+        - delay: 1.0s
+        - switch.turn_on: open_switch
+        - switch.turn_off: open_switch
+
 cover:
   - platform: template
     name: "Window"
@@ -105,10 +122,10 @@ cover:
     name: "Time-Based_Cover"
     open_action:
       - switch.turn_on: open_switch
-    open_duration: 37.3s
+    open_duration: 35.5s
     close_action:
       - switch.turn_on: close_switch
-    close_duration: 34.0s
+    close_duration: 36.0s
     stop_action:
       - switch.turn_off: open_switch
       - switch.turn_off: close_switch
